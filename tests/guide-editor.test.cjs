@@ -17,12 +17,12 @@ function editor(initial = P.fresh()) {
   function element(selector) {
     if (elements.has(selector)) return elements.get(selector);
     const events = new Map(), classes = new Set(), attributes = new Map();
-    let markup='', markupWrites=0;
+    let markup='', markupWrites=0, scrollCalls=0;
     const node = {
       id:selector.slice(1),dataset:{},value:'',textContent:'',hidden:false,disabled:false,
       get innerHTML(){return markup;},set innerHTML(value){markup=value;markupWrites++;},get markupWrites(){return markupWrites;},
       classList:{add:key=>classes.add(key),remove:key=>classes.delete(key),contains:key=>classes.has(key),toggle:(key,on)=>on?classes.add(key):classes.delete(key)},
-      setAttribute:(key,value)=>attributes.set(key,String(value)),getAttribute:key=>attributes.get(key)??null,hasAttribute:key=>attributes.has(key),focus(){},scrollIntoView(){},showModal(){},close(){},
+      setAttribute:(key,value)=>attributes.set(key,String(value)),getAttribute:key=>attributes.get(key)??null,hasAttribute:key=>attributes.has(key),focus(){},scrollIntoView(){scrollCalls++;},get scrollCalls(){return scrollCalls;},showModal(){},close(){},
       addEventListener:(name,fn)=>events.set(name,fn),
       closest:()=>node,
       fire:name=>events.get(name)?.({target:node})
@@ -296,7 +296,8 @@ test('public viewing and level navigation never overwrite the private draft or l
   const ui=editor(privatePlan),before=ui.storage.get(`${storageKey}-draft`);
   const publicPlan=P.demo();publicPlan.name='다른 사람의 빌드';publicPlan.overview.features='공개 설명';
   ui.bridge.openPublic({build:publicPlan,level:10,trees:['sword'],author_name:'작성자'});
-  ui.click('view-level-2',{level:'2'});ui.doubleSkill('sword-cleaving-strike');
+  ui.click('view-level-2',{level:'2'});ui.element('#character-level-up').fire('click');
+  assert.equal(ui.bridge.getBuild().level,3);ui.doubleSkill('sword-cleaving-strike');
   ui.input('description','변경 시도');ui.overview('features','변경 시도');ui.equipment('equipment','변경 시도','mainHand');ui.equipment('recommendedEnchantments','변경 시도');ui.save();
   assert.equal(ui.bridge.getBuild().equipmentPlan.equipment.mainHand,'');assert.equal(ui.bridge.getBuild().equipmentPlan.recommendedEnchantments,'');
   assert.equal(ui.bridge.getBuild().overview.features,'공개 설명');
@@ -431,4 +432,34 @@ test('level unlock is an equal alternative route with live status and still requ
   assert.equal(routeClass('level'),undefined);
   ui.skillClick('survival-butchering');
   assert.doesNotMatch(detail.innerHTML,/data-route=/);
+});
+
+
+test('character level-up advances in place, synchronizes points and timeline, and records new allocations at that level',()=>{
+  const ui=editor(),button=ui.element('#character-level-up'),timeline=ui.element('#level-steps .active');
+  assert.equal(button.disabled,false);
+  button.fire('click');
+  assert.equal(ui.build().level,2);assert.equal(ui.element('#character-level').textContent,'레벨 2');
+  assert.equal(ui.element('#stat-points').textContent,1);assert.equal(ui.element('#skill-points').textContent,3);
+  assert.ok(ui.element('#current-level-plan').innerHTML.includes('Lv.02'));
+  assert.match(ui.element('#level-steps').innerHTML,/data-level="2"[^>]*aria-pressed="true"/);
+  assert.equal(timeline.scrollCalls,0);
+  ui.doubleSkill('sword-cleaving-strike');ui.click('add-strength',{statAdd:'strength'});
+  assert.ok(ui.build().events.every(event=>event.level===2));
+  assert.equal(ui.element('#stat-points').textContent,0);assert.equal(ui.element('#skill-points').textContent,2);
+  assert.equal(timeline.scrollCalls,0);
+});
+
+test('character level-up respects level 30 and remains synchronized when viewing an earlier planned level',()=>{
+  const initial=P.demo();initial.level=29;
+  const ui=editor(initial),button=ui.element('#character-level-up');
+  button.fire('click');
+  assert.equal(ui.build().level,30);assert.equal(button.disabled,true);
+  assert.equal(ui.element('#level-next').disabled,true);
+  assert.equal(button.getAttribute('aria-label'),'최대 레벨 30');
+  button.fire('click');assert.equal(ui.build().level,30);
+  ui.click('view-level-9',{level:'9'});
+  assert.equal(button.disabled,false);assert.equal(ui.element('#level-next').disabled,false);
+  button.fire('click');assert.equal(ui.build().level,10);
+  assert.deepEqual(ui.build().events,initial.events);
 });

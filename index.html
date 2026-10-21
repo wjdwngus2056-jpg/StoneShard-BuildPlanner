@@ -7,7 +7,7 @@
   <meta name="description" content="실제 스톤샤드 초상화와 스킬트리로 설계하는 1~30레벨 캐릭터 빌드 플래너.">
   <title>Stoneshard · 캐릭터 빌드 플래너</title>
   <link rel="icon" href="assets/skills/survival-make-a-halt.png">
-  <link rel="stylesheet" href="styles.css?v=21">
+  <link rel="stylesheet" href="styles.css?v=24">
   <link rel="stylesheet" href="community.css?v=22">
   <script src="game-data.js?v=6" defer></script>
   <script src="data.js?v=20" defer></script>
@@ -16,7 +16,7 @@
   <script src="sharing.js?v=23" defer></script>
   <script src="cloud-config.js?v=16" defer></script>
   <script src="cloud.js?v=22" defer></script>
-  <script src="app.js?v=23" defer></script>
+  <script src="app.js?v=24" defer></script>
   <script src="community.js?v=23" defer></script>
 </head>
 <body>
@@ -40,7 +40,7 @@
         <aside class="character-panel game-panel" aria-label="캐릭터와 능력치">
           <div class="panel-heading"><h2>캐릭터</h2><span>MERCENARY</span></div>
           <div id="character-picker" class="character-picker" role="group" aria-label="캐릭터 선택"></div>
-          <div class="character-sheet"><div class="character-summary"><div id="portrait" class="portrait"></div><div><h2 id="character-name"></h2><span id="character-role"></span><span id="character-english"></span><div class="character-points">SP: <strong id="stat-points">0</strong></div></div></div><div class="character-level-row"><strong id="character-level"></strong><span>능력치 포인트</span></div></div>
+          <div class="character-sheet"><div class="character-summary"><div id="portrait" class="portrait"></div><div><h2 id="character-name"></h2><span id="character-role"></span><span id="character-english"></span><div class="character-points">SP: <strong id="stat-points">0</strong></div></div></div><div class="character-level-row"><strong id="character-level"></strong><button id="character-level-up" type="button" class="button character-level-up" aria-label="캐릭터 1레벨 올리기"><span aria-hidden="true">↑</span> 레벨업 <span class="level-up-step">+1</span></button></div></div>
           <div class="trait-card"><h3><span aria-hidden="true">✦</span> <span id="trait-name"></span></h3><p id="trait-description"></p><div id="trait-controls" hidden></div></div>
           <div class="subheading"><h3>기본 능력치</h3><span>기본 + 투자</span></div><div id="stats" class="stats"></div>
           <div class="event-rewards"><h3>이벤트 보상</h3><div id="event-reward-controls"></div></div>

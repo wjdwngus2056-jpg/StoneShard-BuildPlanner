@@ -36,9 +36,9 @@
     $('#build-status').textContent = saved ? '편집 중 · 이 브라우저에 임시 저장됨' : '편집 중 · 브라우저 임시 저장 불가';
     if (message || removed) notify(`${message || '변경했습니다.'}${removed ? ` 이후 조건이 맞지 않는 선택 ${removed}개를 정리했습니다. 되돌리기로 복구할 수 있어요.` : ''}`);
   }
-  function selectLevel(level) {
+  function selectLevel(level, {scrollTimeline = true} = {}) {
     build.level = P.clampLevel(level); persist(); render();
-    $('#level-steps .active')?.scrollIntoView({block:'nearest',inline:'nearest'});
+    if(scrollTimeline)$('#level-steps .active')?.scrollIntoView({block:'nearest',inline:'nearest'});
   }
   function selectTree(key) {
     treeId = key; category = P.byTree[key].category;
@@ -246,6 +246,8 @@
     $('#portrait').innerHTML = image(hero.image, `${hero.name} 게임 초상화`);
     $('#character-name').textContent = hero.name; $('#character-role').textContent = hero.role; $('#character-english').textContent = hero.english;
     $('#character-level').textContent = `레벨 ${build.level}`;
+    $('#character-level-up').disabled = build.level === 30;
+    $('#character-level-up').setAttribute('aria-label',build.level === 30 ? '최대 레벨 30' : `레벨업 · 레벨 ${build.level}에서 ${build.level+1}로 올리기`);
     $('#trait-name').textContent = hero.trait; $('#trait-description').textContent = hero.description;
     renderTrait(hero, view); renderRewards(view); renderSouvenirs(view);
     $('#stat-points').textContent = view.statPoints; $('#skill-points').textContent = view.skillPoints;
@@ -437,6 +439,7 @@
   $('#build-name').addEventListener('change',event=>{const name=event.target.value.trim()||'이름 없는 여정';update(()=>{build.name=name;});});
   $('#level-prev').addEventListener('click',()=>selectLevel(build.level-1));
   $('#level-next').addEventListener('click',()=>selectLevel(build.level+1));
+  $('#character-level-up').addEventListener('click',()=>selectLevel(build.level+1,{scrollTimeline:false}));
   $('#undo').addEventListener('click',()=>{if(publicView||!history.length)return;build=history.pop();persist();render();notify('이전 변경을 복원했습니다.');});
   $('#reset').addEventListener('click',()=>$('#reset-dialog').showModal());
   $('#confirm-reset').addEventListener('click',()=>{update(()=>{window.WayfarerCommunity?.forgetEdit?.();build=P.fresh(build.characterId);},'1레벨에서 새 계획을 시작합니다.');$('#reset-dialog').close();});
