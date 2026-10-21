@@ -8,7 +8,7 @@
   const clampLevel = level => Math.max(1, Math.min(30, Number.isFinite(Number(level)) ? Math.trunc(Number(level)) : 1));
   const emptyEquipment = () => Object.fromEntries(data.guide.equipmentSlots.map(slot => [slot.id,'']));
   const emptyTierPlan = () => ({description:'',equipment:emptyEquipment(),enchantments:emptyEquipment(),equipmentNotes:''});
-  const fresh = (id = 'arna') => ({ schemaVersion: 2, characterId: character(id).id, name: `${character(id).name}의 새로운 여정`, level: 1, events: [], rewardChoices: Object.fromEntries(data.rewards.map(reward => [reward.id,reward.choices[0].id])), tierPlans:Object.fromEntries(data.guide.tiers.map(tier => [tier,emptyTierPlan()])), souvenirs:[] });
+  const fresh = (id = 'arna') => ({ schemaVersion: 2, characterId: character(id).id, name: `${character(id).name}의 새로운 여정`, level: 1, events: [], rewardChoices: Object.fromEntries(data.rewards.map(reward => [reward.id,reward.choices[0].id])), tierPlans:Object.fromEntries(data.guide.tiers.map(tier => [tier,emptyTierPlan()])), overview:Object.fromEntries(data.guide.overviewFields.map(field=>[field.id,''])), souvenirs:[] });
   const bookKey = skill => `${skill.tree}:${Math.max(1, skill.tier)}`;
   const validBooks = new Set(data.skills.filter(skill => skill.tier > 0).map(bookKey));
 
@@ -81,6 +81,7 @@
     build.name = typeof input?.name === 'string' ? input.name.slice(0, 60) : build.name;
     build.level = clampLevel(input?.level);
     const text = (value,limit) => typeof value === 'string' ? value.slice(0,limit) : '';
+    for(const field of data.guide.overviewFields)build.overview[field.id]=text(input?.overview?.[field.id],field.max);
     for (const tier of data.guide.tiers) {
       const source = input?.tierPlans?.[tier], target = build.tierPlans[tier];
       target.description = text(source?.description,data.guide.limits.description);

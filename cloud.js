@@ -22,7 +22,7 @@
       if(!connection)connection=(async()=>{
         const sdk=options.loadSdk?await options.loadSdk():await import('https://esm.sh/@supabase/supabase-js@2.118.0?bundle');
         return sdk.createClient(settings.url,settings.key,{auth:{flowType:'pkce',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:'wayfarer-auth-v1'}});
-      })().catch(error=>{connection=null;throw error;});
+      })().catch(()=>{connection=null;throw new Error('공개 빌드 서버에 연결할 수 없습니다. 네트워크를 확인하고 다시 시도해주세요.');});
       return connection;
     }
     function fail(error){

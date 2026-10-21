@@ -36,8 +36,9 @@ function editor(initial = P.fresh()) {
       }):[],
     addEventListener:(name,fn)=>handlers.set(name,fn)
   };
+  const window={WAYFARER_DATA:D,WayfarerPlanner:P,WayfarerEffects:E};
   vm.runInNewContext(appSource,{
-    window:{WAYFARER_DATA:D,WayfarerPlanner:P,WayfarerEffects:E},document,
+    window,document,
     localStorage:{getItem:key=>storage.get(key)??null,setItem:(key,value)=>storage.set(key,value)},
     setTimeout:()=>0,clearTimeout(){}
   });
@@ -55,7 +56,8 @@ function editor(initial = P.fresh()) {
     handlers.get('click')({target:node});return node;
   };
   return {
-    element,click,input,storage,skillClick,
+    element,click,input,storage,skillClick,bridge:window.WayfarerEditor,
+    overview:(field,value)=>{const node=element(`#overview-${field}`);node.dataset={overviewField:field};node.value=value;handlers.get('input')({target:node});return node;},
     doubleSkill:key=>{skillClick(key);const node=skillClick(key);handlers.get('dblclick')({target:node,preventDefault(){}});},
     blur:node=>handlers.get('focusout')({target:node}),
     souvenir:(key,checked)=>handlers.get('change')({target:{dataset:{souvenir:key},checked}}),
@@ -300,4 +302,54 @@ test('double-click cancellation applies the existing dependency cascade and undo
   assert.ok(!view.learned.has('sword-cleaving-strike'));assert.ok(!view.learned.has('sword-gloat'));
   assert.ok(view.learned.has('sword-fencer-stance'));assert.ok(view.skillPoints>=before+2);
   ui.undo();assert.deepEqual(ui.build().events,demo.events);
+});
+
+test('public viewing and level navigation never overwrite the private draft or local library', () => {
+  const privatePlan=P.fresh('hilda');privatePlan.name='편집 중인 내 빌드';privatePlan.tierPlans[2].description='개인 메모';privatePlan.overview.features='내 설명';
+  const ui=editor(privatePlan),before=ui.storage.get(`${storageKey}-draft`);
+  const publicPlan=P.demo();publicPlan.name='다른 사람의 빌드';publicPlan.overview.features='공개 설명';
+  ui.bridge.openPublic({build:publicPlan,level:10,trees:['sword'],author_name:'작성자'});
+  ui.click('view-level-2',{level:'2'});ui.doubleSkill('sword-cleaving-strike');
+  ui.input('description','변경 시도');ui.overview('features','변경 시도');ui.save();
+  assert.equal(ui.bridge.getBuild().overview.features,'공개 설명');
+  assert.equal(ui.storage.get(`${storageKey}-draft`),before);
+  assert.equal(ui.storage.get(storageKey),undefined);
+  assert.equal(ui.element('#build-name').readOnly,true);
+  assert.equal(ui.bridge.getBuild().tierPlans[2].description,'');
+  ui.bridge.returnPrivate();
+  assert.equal(ui.bridge.getBuild().name,privatePlan.name);assert.deepEqual(JSON.parse(JSON.stringify(ui.bridge.getBuild().overview)),privatePlan.overview);
+  assert.equal(ui.bridge.getBuild().tierPlans[2].description,'개인 메모');
+  assert.equal(ui.bridge.getBuild().characterId,'hilda');
+  assert.equal(ui.element('#build-name').readOnly,false);
+});
+
+test('explicitly copying a public build creates an editable draft and undo recovers private work', () => {
+  const initial=P.fresh('dirwin');initial.tierPlans[5].equipment.mainHand='내 장비';
+  const ui=editor(initial),published=P.demo();
+  ui.bridge.openPublic({build:published,level:10,trees:['sword']});ui.bridge.copyPublic();
+  assert.equal(ui.bridge.getPublic(),null);assert.equal(ui.build().name,published.name);
+  ui.input('enchantments','명중률','mainHand');
+  assert.equal(ui.build().tierPlans[1].enchantments.mainHand,'명중률');
+  assert.equal(published.tierPlans[1].enchantments.mainHand,'');
+  ui.undo();ui.undo();assert.equal(ui.build().characterId,'dirwin');assert.equal(ui.build().tierPlans[5].equipment.mainHand,'내 장비');
+});
+
+
+test('overview editing preserves typing, saves escaped multiline text and undoes per field', () => {
+  const ui=editor(),writes=ui.element('#overview-fields').markupWrites;
+  ui.overview('features','검과');
+  let field=ui.overview('features','검과 방패\n</textarea><script>메모</script>');ui.blur(field);
+  field=ui.overview('pros','안정적인 방어');ui.blur(field);
+  field=ui.overview('cons','기력 관리 필요');ui.blur(field);
+  assert.equal(ui.element('#overview-fields').markupWrites,writes);
+  const expected=ui.build().overview;
+  ui.click('guide-tab-4',{guideTier:'4'});ui.click('level-2',{level:'2'});
+  assert.deepEqual(ui.build().overview,expected);
+  ui.save();
+  const restored=editor(JSON.parse(ui.storage.get(storageKey))[0].build);
+  assert.deepEqual(restored.build().overview,expected);
+  assert.ok(restored.element('#overview-fields').innerHTML.includes('&lt;/textarea&gt;&lt;script&gt;메모&lt;/script&gt;'));
+  ui.undo();assert.equal(ui.build().overview.cons,'');
+  ui.undo();assert.equal(ui.build().overview.pros,'');
+  ui.undo();assert.equal(ui.build().overview.features,'');
 });

@@ -187,6 +187,7 @@
     const equipmentFields = D.guide.equipmentSlots.map(slot => `<div class="guide-equipment-row"><span class="guide-slot-name">${slot.name}</span><label class="sr-only" for="guide-slot-${slot.id}">${slot.name} 장비명</label><input id="guide-slot-${slot.id}" data-guide-field="equipment" data-guide-slot="${slot.id}" maxlength="${D.guide.limits.equipment}" value="${esc(plan.equipment[slot.id])}" placeholder="장비명" autocomplete="off"><label class="sr-only" for="guide-enchant-${slot.id}">${slot.name} 우선 인챈트 옵션</label><input id="guide-enchant-${slot.id}" data-guide-field="enchantments" data-guide-slot="${slot.id}" maxlength="${D.guide.limits.enchantments}" value="${esc(plan.enchantments[slot.id])}" placeholder="우선 인챈트 옵션" autocomplete="off"></div>`).join('');
     $('#tier-guide-editor').innerHTML = `<section class="guide-description"><div class="guide-section-title"><h3>${guideTier}티어 운영</h3><span id="guide-description-count"></span></div><label class="sr-only" for="guide-description">${guideTier}티어 운영 설명</label><textarea id="guide-description" data-guide-field="description" maxlength="${D.guide.limits.description}" placeholder="이 티어에서의 운영 방법을 자유롭게 적어주세요&#10;&#10;예)&#10;&#10;- 티어 진입 추천 레벨&#10;- 전투 운영법&#10;- 스킬 콤보&#10;- 빌드 팁&#10;- 의뢰 루트">${esc(plan.description)}</textarea></section><section class="guide-equipment"><div class="guide-section-title"><h3>${guideTier}티어 장비 계획</h3><button id="copy-previous-equipment" class="button quiet" ${canCopy?'':'disabled'}>이전 티어 장비 복사</button></div><p class="guide-equipment-intro">장비명과 우선 인챈트 옵션을 부위별로 나누어 적어주세요.</p><div class="guide-equipment-fields"><div class="guide-equipment-heading" aria-hidden="true"><span>부위</span><span>장비명</span><span>우선 인챈트 옵션</span></div>${equipmentFields}</div><div class="guide-equipment-meta"><span id="guide-equipment-count"></span><span>직접 입력</span></div><label class="guide-notes-label" for="guide-equipment-notes">장비 설명 ( 선택이유 / 교체순서 / 대체장비 등)</label><textarea id="guide-equipment-notes" data-guide-field="equipmentNotes" maxlength="${D.guide.limits.equipmentNotes}" placeholder="선택 이유, 교체 순서, 대체 장비 등을 자유롭게 적어주세요.">${esc(plan.equipmentNotes)}</textarea><p class="guide-field-hint">장비 기록은 능력치·스킬 효과 계산에 반영되지 않습니다.</p></section>`;
     renderGuideStatus();
+    if(publicView)document.querySelectorAll('#tier-guide-editor [data-guide-field],#copy-previous-equipment').forEach(control=>{control.disabled=true;});
   }
   function selectGuide(tier) {
     if (!D.guide.tiers.includes(tier)) return;
@@ -206,6 +207,19 @@
     const saved = persist(); $('#undo').disabled = false;
     $('#build-status').textContent = saved ? '편집 중 · 이 브라우저에 임시 저장됨' : '편집 중 · 브라우저 임시 저장 불가';
     renderGuideStatus();
+  }
+
+  function renderOverview(){
+    $('#overview-fields').innerHTML=D.guide.overviewFields.map(field=>`<label class="overview-${field.id}" for="overview-${field.id}"><span>${field.name}</span><textarea id="overview-${field.id}" data-overview-field="${field.id}" maxlength="${field.max}" placeholder="${field.placeholder}">${esc(build.overview[field.id])}</textarea></label>`).join('');
+  }
+  function editOverview(target){
+    if(publicView)return;
+    const field=D.guide.overviewFields.find(field=>field.id===target.dataset.overviewField);if(!field)return;
+    const value=target.value.slice(0,field.max);if(build.overview[field.id]===value)return;
+    if(guideEdit!==target){history.push(clone(build));if(history.length>60)history.shift();guideEdit=target;}
+    build.overview[field.id]=value;
+    const saved=persist();$('#undo').disabled=false;
+    $('#build-status').textContent=saved?'편집 중 · 이 브라우저에 임시 저장됨':'편집 중 · 브라우저 임시 저장 불가';
   }
 
   function render() {
@@ -232,13 +246,13 @@
     $('#level-steps').innerHTML = Array.from({length:30},(_,index) => index+1).map(level => `<button class="level-step ${level === build.level ? 'active' : ''} ${build.events.some(event => event.level === level) ? 'has-events' : ''}" data-level="${level}" aria-label="레벨 ${level}" aria-pressed="${level === build.level}">${level}</button>`).join('');
     const bonuses = [view.statBonus ? `특성 +${view.statBonus} SP` : '',view.eventBonus ? `이벤트 +${view.eventBonus} SP` : '',view.bonus ? `특성 +${view.bonus} AP` : ''].filter(Boolean);
     $('#timeline-caption').textContent = bonuses.length ? `${bonuses.join(' · ')} 포함 · 이후 계획 유지` : '이전 레벨을 보아도 이후 계획은 유지됩니다';
-    renderGuide();
+    renderGuide();renderOverview();
     if (!$('#search-area').hidden) renderSearch();
     const reading=Boolean(publicView);
     for(const key of ['reset','save','load-demo'])$(`#${key}`).disabled=reading;
     $('#undo').disabled=reading||!history.length;$('#build-name').readOnly=reading;
     if(reading){
-      document.querySelectorAll('[data-character],[data-stat-add],[data-stat-remove],[data-book],[data-guide-field],[data-souvenir],[data-reward-toggle],[data-reward-choice],#trait-max-toggle,#copy-previous-equipment,#learn-action').forEach(control=>{control.disabled=true;});
+      document.querySelectorAll('[data-character],[data-stat-add],[data-stat-remove],[data-book],[data-guide-field],[data-overview-field],[data-souvenir],[data-reward-toggle],[data-reward-choice],#trait-max-toggle,#copy-previous-equipment,#learn-action').forEach(control=>{control.disabled=true;});
       $('#build-status').textContent='공개 빌드 · 읽기 전용';
     }else if($('#build-status').textContent==='공개 빌드 · 읽기 전용')$('#build-status').textContent='편집 중 · 이 브라우저에 임시 저장됨';
     window.WayfarerCommunity?.editorChanged?.();
@@ -322,7 +336,8 @@
         <div class="detail-section-label">해금 조건 <span class="route-hint">· 아래 경로 중 하나 충족</span></div>${routeOne}<div class="route-or">OR</div>${routeTwo}${levelInfo}
         <div class="detail-section-label">선행 기술 <span class="route-hint">· ${prerequisiteHint}</span></div>${prereqs}
       </div>
-      <button id="learn-action" class="button primary learn-action" ${state.free || !status.available && !status.learned ? 'disabled' : ''}>${state.free ? '시작 시 습득한 기술' : status.learned ? '습득 취소 · 1 AP 반환' : '기술 습득 · 1 AP'}</button><p class="action-reason">${status.reason}</p>`;
+      <button id="learn-action" class="button primary learn-action" ${publicView || state.free || !status.available && !status.learned ? 'disabled' : ''}>${state.free ? '시작 시 습득한 기술' : status.learned ? '습득 취소 · 1 AP 반환' : '기술 습득 · 1 AP'}</button><p class="action-reason">${status.reason}</p>`;
+    if(publicView)document.querySelectorAll('#skill-detail [data-book]').forEach(control=>{control.disabled=true;});
   }
   function renderJourney() {
     const plans = Array.from({length:30},(_,index) => {
@@ -354,7 +369,7 @@
   document.addEventListener('click',event => {
     const button = event.target.closest('button'); if (!button) return;
     const d = button.dataset;
-    if (d.character && d.character !== build.characterId) update(() => {build=P.fresh(d.character);},'캐릭터를 변경했습니다. 되돌리기로 이전 빌드를 복원할 수 있어요.');
+    if (d.character && d.character !== build.characterId) update(() => {window.WayfarerCommunity?.forgetEdit?.();build=P.fresh(d.character);},'캐릭터를 변경했습니다. 되돌리기로 이전 빌드를 복원할 수 있어요.');
     else if (d.statAdd) addStat(d.statAdd);
     else if (d.statRemove) removeStat(d.statRemove);
     else if (d.category) selectTree(D.trees.find(tree => tree.category === d.category).id);
@@ -375,7 +390,7 @@
     else if (button.hasAttribute('data-close-dialog')) button.closest('dialog').close();
     else if (d.loadBuild) {
       const item=library.find(item => item.id===d.loadBuild);
-      if(item){returnPrivate();update(()=>{build=P.normalize(item.build);},'저장한 빌드를 불러왔습니다.');$('#library-dialog').close();}
+      if(item){returnPrivate();update(()=>{window.WayfarerCommunity?.forgetEdit?.();build=P.normalize(item.build);},'저장한 빌드를 불러왔습니다.');$('#library-dialog').close();window.WayfarerCommunity?.showEditor?.();}
     } else if (d.deleteBuild) {
       const next=library.filter(item=>item.id!==d.deleteBuild);
       try{localStorage.setItem(STORAGE,JSON.stringify(next));library=next;renderLibrary();$('#saved-count').textContent=library.length;notify('저장한 빌드를 삭제했습니다.');}catch{notify('저장소에 접근할 수 없어 삭제하지 못했습니다.');}
@@ -394,7 +409,7 @@
     else if(event.target.dataset.rewardToggle)toggleReward(event.target.dataset.rewardToggle,event.target.checked);
     else if(event.target.dataset.rewardChoice)changeRewardChoice(event.target.dataset.rewardChoice,event.target.value);
   });
-  document.addEventListener('input',event=>{if(event.target.dataset.guideField)editGuide(event.target);});
+  document.addEventListener('input',event=>{if(event.target.dataset.guideField)editGuide(event.target);else if(event.target.dataset.overviewField)editOverview(event.target);});
   document.addEventListener('focusout',event=>{if(event.target===guideEdit)guideEdit=null;});
   document.addEventListener('keydown',event=>{
     if(event.target.matches('[role="tab"][data-guide-tier]') && ['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) {
@@ -412,8 +427,8 @@
   $('#level-next').addEventListener('click',()=>selectLevel(build.level+1));
   $('#undo').addEventListener('click',()=>{if(publicView||!history.length)return;build=history.pop();persist();render();notify('이전 변경을 복원했습니다.');});
   $('#reset').addEventListener('click',()=>$('#reset-dialog').showModal());
-  $('#confirm-reset').addEventListener('click',()=>{update(()=>{build=P.fresh(build.characterId);},'1레벨에서 새 계획을 시작합니다.');$('#reset-dialog').close();});
-  $('#load-demo').addEventListener('click',()=>update(()=>{build=P.demo();treeId='sword';category='weapon';selectedId='sword-fencer-stance';},'예시 빌드를 불러왔습니다.'));
+  $('#confirm-reset').addEventListener('click',()=>{update(()=>{window.WayfarerCommunity?.forgetEdit?.();build=P.fresh(build.characterId);},'1레벨에서 새 계획을 시작합니다.');$('#reset-dialog').close();});
+  $('#load-demo').addEventListener('click',()=>update(()=>{window.WayfarerCommunity?.forgetEdit?.();build=P.demo();treeId='sword';category='weapon';selectedId='sword-fencer-stance';},'예시 빌드를 불러왔습니다.'));
   $('#save').addEventListener('click',()=>{
     if(publicView){notify('공개 빌드를 복사한 뒤 저장해주세요.');return;}
     if(library.length>=20){notify('최대 20개까지 저장할 수 있습니다. 내 빌드에서 공간을 정리해주세요.');return;}

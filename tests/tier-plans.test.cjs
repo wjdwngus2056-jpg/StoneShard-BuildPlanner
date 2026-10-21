@@ -107,3 +107,17 @@ test('tier equipment and notes never alter point budgets, attributes or skill ef
   assert.equal(after.statPoints, before.statPoints);
   assert.equal(after.skillPoints, before.skillPoints);
 });
+
+
+test('overview migration is independent of tier plans and bounds untrusted text without mutating saves', () => {
+  const legacy=P.demo();delete legacy.overview;
+  const before=JSON.stringify(legacy),restored=P.normalize(legacy);
+  assert.deepEqual(restored.overview,{features:'',pros:'',cons:''});
+  assert.equal(JSON.stringify(legacy),before);assert.deepEqual(restored.events,legacy.events);
+  assert.deepEqual(restored.tierPlans,legacy.tierPlans);
+  const input={...legacy,overview:{features:'가'.repeat(5000),pros:42,cons:'단점\n메모',unknown:'무시'}};
+  const clean=P.normalize(input);
+  assert.equal(clean.overview.features.length,4000);assert.equal(clean.overview.pros,'');
+  assert.equal(clean.overview.cons,'단점\n메모');assert.ok(!Object.hasOwn(clean.overview,'unknown'));
+  clean.overview.cons='수정';assert.equal(input.overview.cons,'단점\n메모');
+});

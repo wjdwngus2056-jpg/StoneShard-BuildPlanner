@@ -11,7 +11,8 @@ create table public.published_builds (
   trees text[] not null default '{}' check (cardinality(trees) <= 3 and trees <@ array['sword','axe','mace','dagger','two-handed-sword','two-handed-axe','two-handed-mace','spear','ranged','shield','staff','dual-wielding','athletics','survival','warfare','armored-combat','magic-mastery','pyromancy','geomancy','electromancy','arcanistics']::text[]),
   build jsonb not null check (
     jsonb_typeof(build) = 'object' and octet_length(build::text) <= 262144
-    and build->>'schemaVersion' = '2'
+    and build ?& array['schemaVersion','characterId','name','events']
+    and build->'schemaVersion' = '2'::jsonb
     and build->>'characterId' = character_id and build->>'name' = title
     and jsonb_typeof(build->'events') = 'array'
     and jsonb_array_length(build->'events') <= 500

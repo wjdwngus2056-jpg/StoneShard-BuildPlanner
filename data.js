@@ -64,6 +64,11 @@
   }
   const guide = {
     tiers:[1,2,3,4,5],
+    overviewFields:[
+      {id:'features',name:'빌드 특징',max:4000,placeholder:'주력 무기와 기술, 전투 방식, 추천하는 플레이 스타일 등을 적어주세요.'},
+      {id:'pros',name:'장점',max:2000,placeholder:'이 빌드의 강점과 유리한 상황을 적어주세요.'},
+      {id:'cons',name:'단점',max:2000,placeholder:'취약한 상황, 주의할 적이나 성장 구간 등을 적어주세요.'}
+    ],
     equipmentSlots:[
       {id:'mainHand',name:'주무기'}, {id:'offHand',name:'보조 무기·방패'},
       {id:'head',name:'머리'}, {id:'chest',name:'몸통'}, {id:'hands',name:'손'},

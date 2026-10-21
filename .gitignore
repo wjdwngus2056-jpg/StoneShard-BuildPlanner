@@ -3,3 +3,10 @@ preview/reference/
 preview/*.html
 __pycache__/
 *.pyc
+dist/
+node_modules/
+.env
+.env.*
+!.env.example
+.dev.vars
+.wrangler/
