@@ -103,12 +103,12 @@
     if (hero.statBonus) {
       const grant = build.events.find(event => event.type === 'trait' && event.key === hero.statBonus.key);
       const applied = view.statBonus > 0;
-      const note = applied ? `Lv.${grant.level}부터 +${hero.statBonus.max} SP 적용 중` : grant ? `Lv.${grant.level}에 적용 예정 · 현재 시점에는 미적용` : '선택한 레벨부터 최대 보상을 획득한 것으로 계산합니다.';
-      controls.innerHTML = `<label class="trait-toggle ${applied ? 'applied' : ''}"><input id="trait-max-toggle" type="checkbox" ${applied ? 'checked' : ''} aria-describedby="trait-bonus-note"><span>특성 최대 보상 적용<strong>+${hero.statBonus.max} SP</strong></span></label><p id="trait-bonus-note" class="trait-bonus-note">${note}</p><p class="trait-bonus-detail">${hero.statBonus.detail}</p>`;
+      const note = grant ? `Lv.${grant.level} ${applied ? '적용' : '적용 예정'}` : '';
+      controls.innerHTML = `<label class="trait-toggle ${applied ? 'applied' : ''}"><input id="trait-max-toggle" type="checkbox" ${applied ? 'checked' : ''} ${note ? 'aria-describedby="trait-bonus-note"' : ''}><span>특성 최대 보상<strong>+${hero.statBonus.max} SP</strong></span></label>${note ? `<p id="trait-bonus-note" class="trait-bonus-note">${note}</p>` : ''}`;
     }
     if (hero.bonus) {
       const progress = hero.bonus === 'survival' ? `생존에 직접 투자한 ${view.counts.survival || 0} AP 기준` : `6 AP 이상 투자한 계열 ${Object.values(view.counts).filter(count => count >= 6).length}개 · 최대 ${hero.bonusCap}회`;
-      controls.innerHTML += `<div class="trait-auto"><span>AP 보너스 자동 계산</span><strong>+${view.bonus} AP</strong></div><p class="trait-bonus-note">${progress}</p>`;
+      controls.innerHTML += `<div class="trait-auto"><span>특성 AP 보너스</span><strong>+${view.bonus} AP</strong></div><p class="trait-bonus-note">${progress}</p>`;
     }
     if (hero.id === D.souvenirs.characterId) {
       controls.innerHTML += `<div class="souvenir-summary"><div class="souvenir-summary-heading"><strong>뼈 부적 기념품</strong><span>${view.souvenirs.length} / ${D.souvenirs.limit}</span></div>${view.souvenirs.length ? `<ul>${view.souvenirs.map(option => `<li><strong>${option.trophy}</strong><span>${option.effect}</span><small>기본 ${souvenirValue(option,option.base)} · 최대 ${souvenirValue(option,option.max)}</small></li>`).join('')}</ul>` : '<p>뼈 부적에 붙일 효과를 선택해주세요.</p>'}<button id="open-souvenirs" class="button">${view.souvenirs.length?'기념품 선택 변경':'기념품 선택'}</button></div>`;
@@ -160,9 +160,9 @@
     $('#event-reward-controls').innerHTML = D.rewards.map(reward => {
       const grant = build.events.find(event => event.type === 'reward' && event.key === reward.id);
       const active = view.rewards.has(reward.id), choice = build.rewardChoices[reward.id];
-      const note = active ? `Lv.${grant.level}부터 보상 적용 중` : grant ? `Lv.${grant.level}에 적용 예정` : '선택한 레벨부터 보상을 획득한 것으로 계산합니다.';
+      const note = grant ? `Lv.${grant.level} ${active ? '적용' : '적용 예정'}` : '';
       const option = reward.choices.find(item => item.id === choice);
-      return `<label class="trait-toggle ${active ? 'applied' : ''}"><input type="checkbox" data-reward-toggle="${reward.id}" ${active ? 'checked' : ''} aria-describedby="reward-note-${reward.id}"><span>${reward.name} 보상 적용<strong>+${reward.statPoints} SP</strong></span></label><label class="reward-choice"><span>바친 보석</span><select data-reward-choice="${reward.id}" ${active ? '' : 'disabled'}>${reward.choices.map(item => `<option value="${item.id}" ${item.id === choice ? 'selected' : ''}>${item.name} · ${item.label}</option>`).join('')}</select></label>${active ? `<div class="permanent-bonus"><span>추가 영구 효과</span><strong>${option.label}</strong></div>` : ''}<p id="reward-note-${reward.id}" class="reward-note">${note}</p>`;
+      return `<label class="trait-toggle ${active ? 'applied' : ''}"><input type="checkbox" data-reward-toggle="${reward.id}" ${active ? 'checked' : ''} ${note ? `aria-describedby="reward-note-${reward.id}"` : ''}><span>${reward.name} 보상 적용<strong>+${reward.statPoints} SP</strong></span></label><label class="reward-choice"><span>바친 보석</span><select data-reward-choice="${reward.id}" ${active ? '' : 'disabled'}>${reward.choices.map(item => `<option value="${item.id}" ${item.id === choice ? 'selected' : ''}>${item.name} · ${item.label}</option>`).join('')}</select></label>${active ? `<div class="permanent-bonus"><span>추가 영구 효과</span><strong>${option.label}</strong></div>` : ''}${note ? `<p id="reward-note-${reward.id}" class="reward-note">${note}</p>` : ''}`;
     }).join('');
   }
 
@@ -226,6 +226,18 @@
     }else if(['recommendedEnchantments','equipmentNotes'].includes(field))commitText(target,build.equipmentPlan,field,target.value.slice(0,D.guide.limits[field]));
   }
 
+  function renderInvestments(view) {
+    const invested = D.trees.filter(tree => view.counts[tree.id] > 0)
+      .sort((a,b) => view.counts[b.id] - view.counts[a.id]);
+    const summary = $('#ability-investments');
+    summary.hidden = !invested.length;
+    summary.setAttribute('aria-label', `Lv.${build.level} 계열별 기술 투자`);
+    summary.innerHTML = invested.map(tree => {
+      const skill = D.skills.find(skill => skill.tree === tree.id), count = view.counts[tree.id];
+      return `<button class="investment-chip" data-tree="${tree.id}" data-category-color="${tree.category}" aria-pressed="${tree.id === treeId}" aria-label="${tree.name} ${count}개 투자 · 계열 보기" title="직접 투자한 기술 · Lv.${build.level} 기준">${image(skill.image,'')}<span>${tree.name}</span><strong>${count}</strong></button>`;
+    }).join('');
+  }
+
   function render() {
     const hero = P.character(build.characterId), view = P.replay(build), tree = P.byTree[treeId];
     $('#build-name').value = build.name; $('#undo').disabled = !history.length;
@@ -245,11 +257,11 @@
     $('#tree-subtitle').textContent = tree.english;
     const nodes = D.skills.filter(skill => skill.tree === treeId);
     $('#tree-investment').textContent = `${nodes.filter(skill => view.learned.has(skill.id)).length} / ${nodes.length} 습득`;
-    renderTree(view, tree, nodes); renderDetail(view); renderJourney();
+    renderInvestments(view); renderTree(view, tree, nodes); renderDetail(view); renderJourney();
     $('#level-prev').disabled = build.level === 1; $('#level-next').disabled = build.level === 30;
     $('#level-steps').innerHTML = Array.from({length:30},(_,index) => index+1).map(level => `<button class="level-step ${level === build.level ? 'active' : ''} ${build.events.some(event => event.level === level) ? 'has-events' : ''}" data-level="${level}" aria-label="레벨 ${level}" aria-pressed="${level === build.level}">${level}</button>`).join('');
     const bonuses = [view.statBonus ? `특성 +${view.statBonus} SP` : '',view.eventBonus ? `이벤트 +${view.eventBonus} SP` : '',view.bonus ? `특성 +${view.bonus} AP` : ''].filter(Boolean);
-    $('#timeline-caption').textContent = bonuses.length ? `${bonuses.join(' · ')} 포함 · 이후 계획 유지` : '이전 레벨을 보아도 이후 계획은 유지됩니다';
+    $('#timeline-caption').textContent = bonuses.join(' · ');
     renderGuide();renderOverview();renderEquipment();
     if (!$('#search-area').hidden) renderSearch();
     const reading=Boolean(publicView);
@@ -307,13 +319,13 @@
     const acquisition = P.byTree[skill.tree].acquisition;
     const purchase = acquisition.purchases[String(skill.tier)];
     const showDropHint = skill.tier === 3 || skill.tier === 4;
-    const bookSources = skill.tier > 0 ? `<dl class="book-sources"><div><dt>${showDropHint ? '획득처' : '구매처'}</dt><dd>${showDropHint ? '드랍으로 획득' : esc(purchase)}</dd></div>${skill.tier === 1 && acquisition.trainer ? `<div><dt>교관</dt><dd>${esc(acquisition.trainer)}<small>기초 단계 교육</small></dd></div>` : ''}</dl>` : '<p class="route-hint">문헌 없이 시작부터 해금된 기초 기술입니다.</p>';
-    const routeOne = `<div class="unlock-route ${state.book || initial ? 'met' : ''}" data-route="treatise"><div class="route-title"><span><span class="route-number">01</span>문헌으로 해금</span><span class="route-status">${initial ? '시작 해금' : state.book ? '읽음 ✓' : '미확보'}</span></div><p class="route-text">${skill.tier === 0 ? '공통 기초 기술' : title}</p>${bookSources}${state.book ? `<p class="route-hint">Lv.${readEvent.level}에 읽음</p>` : ''}${skill.tier > 0 ? `<button class="book-toggle ${state.book ? 'read' : ''}" data-book="${key}" aria-pressed="${state.book}">${state.book ? '✓ 문헌 읽음 · 취소하기' : `이 문헌을 Lv.${build.level}에 읽기`}</button>` : ''}</div>`;
-    const routeTwo = `<div class="unlock-route ${state.attributes ? 'met' : ''}" data-route="attributes"><div class="route-title"><span><span class="route-number">02</span>능력치로 해금</span><span class="route-status">${attrTarget === null ? '별도 조건 없음' : state.attributes ? '충족 ✓' : '투자 필요'}</span></div>${attrTarget === null ? `<p class="route-text">${initial ? '시작 시 해금된 기초 단계' : '문헌 또는 시작 해금 필요'}</p><p class="route-hint">이 기술에는 별도의 능력치 해금 수치가 등록되어 있지 않습니다.</p>` : `<p class="route-text">${attrNames.join(' + ')} 합산 투자</p><div class="stat-progress"><strong>${state.current}<small> / ${attrTarget}</small></strong><span>${state.attributes ? '요구 수치 충족' : `${state.remaining}포인트 더 필요`}</span></div><div class="progress-bar" role="progressbar" aria-label="능력치 해금 조건" aria-valuemin="0" aria-valuemax="${attrTarget}" aria-valuenow="${Math.min(state.current,attrTarget)}"><span style="width:${percent}%"></span></div><div class="requirement-chips">${skill.unlock.attributes.map(attr => `<span>${D.stats.find(stat => stat.id === attr).name} +${Math.max(0,view.values[attr]-10)}</span>`).join('')}</div><p class="route-hint">기준값 10을 초과한 수치를 합산합니다.<br>시작 능력치 보너스도 포함됩니다.</p>`}</div>`;
-    const levelInfo = skill.unlock.level !== null ? `<p class="level-condition ${state.byLevel ? 'met' : ''}">추가 해금: 레벨 ${skill.unlock.level} 도달 ${state.byLevel ? '✓ 충족' : `(현재 ${build.level})`}<br>문헌·능력치 조건 대신 레벨 도달로도 해금됩니다.</p>` : '';
+    const bookSources = skill.tier > 0 ? `<dl class="book-sources"><div><dt>${showDropHint ? '획득처' : '구매처'}</dt><dd>${showDropHint ? '드랍으로 획득' : esc(purchase)}</dd></div>${skill.tier === 1 && acquisition.trainer ? `<div><dt>교관</dt><dd>${esc(acquisition.trainer)}</dd></div>` : ''}</dl>` : '';
+    const routes = [];
+    if (skill.tier > 0) routes.push(`<div class="unlock-route ${state.book ? 'met' : ''}" data-route="treatise"><div class="route-title"><span>문헌으로 해금</span><span class="route-status">${state.book ? `Lv.${readEvent.level} 읽음 ✓` : '미확보'}</span></div><p class="route-text">${title}</p>${bookSources}<button class="book-toggle ${state.book ? 'read' : ''}" data-book="${key}" aria-pressed="${state.book}">${state.book ? '✓ 문헌 읽음 · 취소' : `Lv.${build.level}에 읽기`}</button></div>`);
+    if (attrTarget !== null) routes.push(`<div class="unlock-route ${state.attributes ? 'met' : ''}" data-route="attributes"><div class="route-title"><span>능력치로 해금</span><span class="route-status">${state.attributes ? '충족 ✓' : '미충족'}</span></div><p class="route-text">${attrNames.join(' + ')} 합산 ${attrTarget}</p><div class="stat-progress"><strong>${state.current}<small> / ${attrTarget}</small></strong><span>${state.attributes ? '충족' : `${state.remaining}포인트 필요`}</span></div><div class="progress-bar" role="progressbar" aria-label="능력치 해금 조건" aria-valuemin="0" aria-valuemax="${attrTarget}" aria-valuenow="${Math.min(state.current,attrTarget)}"><span style="width:${percent}%"></span></div><div class="requirement-chips" title="기본값 10을 초과한 능력치의 합계 · 시작 능력치 포함">${skill.unlock.attributes.map(attr => `<span>${D.stats.find(stat => stat.id === attr).name} +${Math.max(0,view.values[attr]-10)}</span>`).join('')}</div></div>`);
+    if (skill.unlock.level !== null) routes.push(`<div class="unlock-route ${state.byLevel ? 'met' : ''}" data-route="level"><div class="route-title"><span>레벨로 해금</span><span class="route-status">${state.byLevel ? '충족 ✓' : '미충족'}</span></div><p class="route-text">레벨 ${skill.unlock.level} 도달</p><div class="stat-progress"><strong>${build.level}<small> / ${skill.unlock.level}</small></strong><span>${state.byLevel ? '충족' : `${skill.unlock.level-build.level}레벨 필요`}</span></div><div class="progress-bar" role="progressbar" aria-label="레벨 해금 조건" aria-valuemin="1" aria-valuemax="${skill.unlock.level}" aria-valuenow="${Math.min(build.level,skill.unlock.level)}"><span style="width:${Math.min(100,build.level/skill.unlock.level*100)}%"></span></div></div>`);
     const paths = state.prerequisites.paths;
-    const prerequisiteHint = !paths.length ? '조건 없음' : paths.length > 1 ? '아래 경로 중 하나 충족' : paths[0].required.length > 1 ? '◆ 연결된 기술 모두 필요' : '연결된 기술 습득 필요';
-    const prereqs = paths.length ? `<div class="prerequisite-paths" data-prerequisites-met="${state.prerequisites.met}">${paths.map(path => `<div class="prerequisite-path ${path.met ? 'met' : ''}" data-path-met="${path.met}"><div class="prerequisite-path-title"><span>${path.required.length > 1 ? '<b class="junction-gem" aria-hidden="true">◆</b> 모두 필요' : '선행 기술'}</span><span>${path.met ? '충족 ✓' : '미충족'}</span></div><div class="prerequisite-list">${path.required.map(required => `<button class="prerequisite-chip ${view.learned.has(required) ? 'met' : ''}" data-inspect="${required}">${image(P.bySkill[required].image,P.bySkill[required].name)}${P.bySkill[required].name}${view.learned.has(required) ? ' ✓' : ''}</button>`).join('<span class="prerequisite-and">그리고</span>')}</div></div>`).join('<div class="prerequisite-or">또는</div>')}</div>` : '<p class="no-prerequisite">선행 기술 없음</p>';
+    const prereqs = paths.length ? `<div class="prerequisite-paths" data-prerequisites-met="${state.prerequisites.met}">${paths.map(path => `<div class="prerequisite-path ${path.met ? 'met' : ''}" data-path-met="${path.met}"><div class="prerequisite-path-title"><span>${path.required.length > 1 ? '<b class="junction-gem" aria-hidden="true">◆</b> 모두 필요' : '선행 기술'}</span><span>${path.met ? '충족 ✓' : '미충족'}</span></div><div class="prerequisite-list">${path.required.map(required => `<button class="prerequisite-chip ${view.learned.has(required) ? 'met' : ''}" data-inspect="${required}">${image(P.bySkill[required].image,P.bySkill[required].name)}${P.bySkill[required].name}${view.learned.has(required) ? ' ✓' : ''}</button>`).join('<span class="prerequisite-and">그리고</span>')}</div></div>`).join('<div class="prerequisite-or">또는</div>')}</div>` : '';
     const combat = skill.combat || {}, targetNames = {area:'범위',tile:'지정 타일',object:'대상 지정'};
     const metrics = [
       combat.energy !== undefined ? ['기본 기력',combat.energy] : null,
@@ -331,16 +343,16 @@
       <div class="detail-tabs" role="tablist" aria-label="기술 상세 정보">${[['effects','스킬 효과'],['unlock','해금·습득']].map(([key,label]) => `<button id="detail-tab-${key}" role="tab" data-detail-tab="${key}" aria-selected="${detailTab === key}" aria-controls="detail-panel-${key}" tabindex="${detailTab === key ? '0' : '-1'}">${label}</button>`).join('')}</div>
       <div id="detail-panel-effects" role="tabpanel" aria-labelledby="detail-tab-effects" tabindex="0" ${detailTab !== 'effects' ? 'hidden' : ''}>
         ${metrics.length ? `<dl class="combat-metrics">${metrics.map(([label,value])=>`<div><dt>${label}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>` : ''}
-        <div class="effects-heading"><strong>기술 효과</strong><span>Lv.${build.level} 능력치 기준</span></div>
+        <div class="effects-heading"><strong>기술 효과</strong><span title="현재 기본 능력치로 계산 · 장비·버프 제외${formulas ? ' · 장비·상황 수치는 계산식으로 표시' : ''}">Lv.${build.level} 능력치 기준</span></div>
         <div class="effect-scroll">${skill.effects.map(line=>`<p class="effect-line">${E.renderText(line,view.values)}</p>`).join('')}</div>
-        <p class="effect-note">능력치 계수는 현재 기본 능력치로 계산합니다. 장비·버프·전투 상황은 포함하지 않습니다.${formulas ? '<br>장비·상황 수치가 필요한 식은 계산식으로 표시합니다.' : ''}</p>
-        <button class="detail-condition-link" data-detail-tab="unlock">해금 조건과 선행 기술 확인 →</button>
+        <button class="detail-condition-link" data-detail-tab="unlock">해금 조건 보기 →</button>
       </div>
       <div id="detail-panel-unlock" role="tabpanel" aria-labelledby="detail-tab-unlock" tabindex="0" ${detailTab !== 'unlock' ? 'hidden' : ''}>
-        <div class="detail-section-label">해금 조건 <span class="route-hint">· 아래 경로 중 하나 충족</span></div>${routeOne}<div class="route-or">OR</div>${routeTwo}${levelInfo}
-        <div class="detail-section-label">선행 기술 <span class="route-hint">· ${prerequisiteHint}</span></div>${prereqs}
+        ${initial && !state.free ? '<p class="innate-notice">시작 시 해금</p>' : ''}
+        ${routes.length ? `<div class="detail-section-label">해금 조건</div>${routes.join('<div class="route-or">또는</div>')}` : ''}
+        ${paths.length ? `<div class="detail-section-label">선행 기술</div>${prereqs}` : ''}
       </div>
-      <button id="learn-action" class="button primary learn-action" ${publicView || state.free || !status.available && !status.learned ? 'disabled' : ''}>${state.free ? '시작 시 습득한 기술' : status.learned ? '습득 취소 · 1 AP 반환' : '기술 습득 · 1 AP'}</button><p class="action-reason">${status.reason}</p>`;
+      <button id="learn-action" class="button primary learn-action" ${publicView || state.free || !status.available && !status.learned ? 'disabled' : ''}>${state.free ? '시작 시 습득한 기술' : status.learned ? '습득 취소 · 1 AP 반환' : '기술 습득 · 1 AP'}</button>`;
     if(publicView)document.querySelectorAll('#skill-detail [data-book]').forEach(control=>{control.disabled=true;});
   }
   function renderJourney() {

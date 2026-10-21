@@ -7,16 +7,16 @@
   <meta name="description" content="실제 스톤샤드 초상화와 스킬트리로 설계하는 1~30레벨 캐릭터 빌드 플래너.">
   <title>Stoneshard · 캐릭터 빌드 플래너</title>
   <link rel="icon" href="assets/skills/survival-make-a-halt.png">
-  <link rel="stylesheet" href="styles.css?v=19">
+  <link rel="stylesheet" href="styles.css?v=20">
   <link rel="stylesheet" href="community.css?v=16">
   <script src="game-data.js?v=6" defer></script>
-  <script src="data.js?v=19" defer></script>
+  <script src="data.js?v=20" defer></script>
   <script src="planner.js?v=19" defer></script>
   <script src="effects.js?v=6" defer></script>
   <script src="sharing.js?v=16" defer></script>
   <script src="cloud-config.js?v=16" defer></script>
   <script src="cloud.js?v=16" defer></script>
-  <script src="app.js?v=19" defer></script>
+  <script src="app.js?v=20" defer></script>
   <script src="community.js?v=16" defer></script>
 </head>
 <body>
@@ -34,7 +34,7 @@
     <section class="workspace" aria-label="캐릭터 빌드 편집기">
       <div id="public-build-banner" class="public-build-banner" hidden><div><strong id="public-build-byline"></strong><p id="public-build-summary"></p><p>공개 빌드 열람 중 · 복사하면 자유롭게 편집할 수 있습니다.</p></div><div><button id="public-copy" class="button primary">편집용 복사</button><button id="public-edit" class="button" hidden>내 공개 빌드 수정</button><button id="public-share" class="button">공유 주소</button><button id="public-return" class="button quiet">내 작업으로 돌아가기</button></div></div>
       <div class="build-toolbar"><div class="build-name-wrap"><span class="save-crystal" aria-hidden="true">◆</span><div><label class="sr-only" for="build-name">빌드 이름</label><input id="build-name" maxlength="60" autocomplete="off" spellcheck="false"><span id="build-status">레벨별 능력치와 스킬을 계획하세요</span></div></div><div class="toolbar-actions"><button id="undo" class="button quiet">↶ 되돌리기</button><button id="reset" class="button quiet">↻ 초기화</button><button id="open-publish" class="button">공개하기</button><button id="save" class="button primary">빌드 저장</button></div></div>
-      <div class="timeline game-panel"><div class="timeline-title"><h2>레벨별 성장 계획</h2><span id="timeline-caption">이전 레벨을 보아도 이후 계획은 유지됩니다</span></div><div class="level-selector"><button id="level-prev" class="level-arrow" aria-label="이전 레벨">◀</button><div id="level-steps" role="group" aria-label="레벨 선택"></div><button id="level-next" class="level-arrow" aria-label="다음 레벨">▶</button></div><div id="current-level-plan" class="current-level-plan" role="status" aria-live="polite"></div></div>
+      <div class="timeline game-panel"><div class="timeline-title"><h2>레벨별 성장 계획</h2><span id="timeline-caption"></span></div><div class="level-selector"><button id="level-prev" class="level-arrow" aria-label="이전 레벨">◀</button><div id="level-steps" role="group" aria-label="레벨 선택"></div><button id="level-next" class="level-arrow" aria-label="다음 레벨">▶</button></div><div id="current-level-plan" class="current-level-plan" role="status" aria-live="polite"></div></div>
       <details id="growth-record" class="journey-panel game-panel"><summary><span class="journey-heading">성장 기록</span><span class="journey-toggle-hint">레벨별 스탯·스킬 투자 요약</span><span class="journey-toggle-label" aria-hidden="true"></span></summary><div class="journey-toolbar"><span>각 레벨에 직접 투자한 내용입니다. 레벨을 누르면 해당 시점으로 이동합니다.</span></div><div class="journey-table-wrap" tabindex="0" aria-label="성장 기록 표"><table class="journey-table"><caption class="sr-only">1~30레벨의 스탯, 스킬, 문헌과 보상 계획</caption><thead><tr><th scope="col">레벨</th><th scope="col">스탯 투자</th><th scope="col">습득 스킬</th><th scope="col">문헌·보상</th></tr></thead><tbody id="journey-list"></tbody></table></div></details>
       <div class="planner-grid">
         <aside class="character-panel game-panel" aria-label="캐릭터와 능력치">
@@ -46,12 +46,12 @@
           <div class="event-rewards"><h3>이벤트 보상</h3><div id="event-reward-controls"></div></div>
           <div id="starting-skills" class="starting-skills"></div>
           <div class="affinity"><h3>시작 시 해금한 계열</h3><div id="affinity-list"></div></div>
-          <p class="panel-note">시작 해금과 이미 습득한 기술은 별개입니다.<br>능력치·문헌·기술 투자는 선택한 레벨에 기록됩니다.</p>
         </aside>
 
         <section class="skills-panel game-panel" aria-label="스킬 트리">
           <div class="panel-heading"><h2>능력</h2><div class="ap-counter">남은 AP <strong id="skill-points">0</strong></div></div>
-          <div class="skill-categories" role="group" aria-label="스킬 분류"><button data-category="weapon">무기 기술 <small>11</small></button><button data-category="utility">범용 <small>6</small></button><button data-category="magic">마법 <small>4</small></button></div>
+          <div id="ability-investments" class="ability-investments" role="group" aria-label="계열별 기술 투자" hidden></div>
+          <div class="skill-categories" role="group" aria-label="스킬 분류"><button data-category="weapon">무기 기술</button><button data-category="utility">범용</button><button data-category="magic">마법</button></div>
           <div class="tree-toolbar"><div id="tree-picker" role="group" aria-label="스킬 트리 선택"></div><button id="search-toggle" class="search-button" aria-label="스킬 검색" aria-expanded="false">⌕</button></div>
           <div id="search-area" class="search-area" hidden><label for="skill-search">전체 스킬 검색</label><input id="skill-search" type="search" placeholder="한국어 또는 영어 스킬명"><div id="search-results"></div></div>
           <div class="tree-stage"><div class="tree-stage-heading"><span id="tree-subtitle"></span><span id="tree-investment"></span></div><div id="skill-tree" class="skill-tree"></div></div>
@@ -68,16 +68,15 @@
         <div class="tier-guide-header"><div><h2 id="tier-guide-title">티어별 운영 가이드</h2><p>각 티어에서의 운영 방법과 빌드 팁을 남겨보세요.</p></div><span>1~5티어 운영 설명</span></div>
         <div id="tier-guide-tabs" class="tier-guide-tabs" role="tablist" aria-label="던전 티어"></div>
         <div id="tier-guide-editor" class="tier-guide-layout" role="tabpanel" tabindex="0"></div>
-        <p class="tier-guide-footnote">티어는 레벨과 별도로 선택합니다. 각 티어의 운영 설명은 빌드에 함께 저장됩니다.</p>
       </section>
     </section>
-    <footer><p>게임 아트 © Ink Stains Games <span>·</span> 비공식 팬 프로젝트</p><p>해금 조건·전투 수치 패치별 대조 중</p></footer>
+    <footer><p>게임 아트 © Ink Stains Games <span>·</span> 비공식 팬 프로젝트</p></footer>
   </main>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <dialog id="publish-dialog" aria-labelledby="publish-title"><button class="dialog-close" aria-label="닫기" data-close-dialog>×</button><div class="dialog-eyebrow">PUBLISH BUILD</div><h2 id="publish-title">빌드 공개</h2><p id="publish-build-name"></p><p>빌드 설명, 레벨별 투자, 최종 장비 계획과 티어별 운영 설명이 모두 공개됩니다.</p><div id="publish-login"><p>빌드를 올리려면 로그인해주세요. 다른 기기에서도 내 공개 빌드를 관리할 수 있습니다.</p><button id="publish-sign-in" class="button primary">Google로 로그인</button></div><form id="publish-form"><label>공개 대상<select id="publish-target"><option value="">새 빌드로 공개</option></select></label><label>작성자 이름<input id="publish-author" maxlength="30" required autocomplete="nickname" placeholder="공개 목록에 표시할 이름"></label><label>한 줄 소개 <span>선택</span><textarea id="publish-summary" maxlength="240" rows="3" placeholder="빌드의 특징과 추천하는 플레이 방식을 간단히 적어주세요."></textarea></label><p id="publish-status" role="status" aria-live="polite"></p><div class="dialog-actions"><button type="button" class="button" data-close-dialog>취소</button><button id="publish-submit" type="submit" class="button primary">공개하기</button></div></form></dialog>
   <dialog id="share-dialog" aria-labelledby="share-title"><button class="dialog-close" aria-label="닫기" data-close-dialog>×</button><h2 id="share-title">공유 주소</h2><p>이 주소로 누구나 빌드를 볼 수 있습니다.</p><label class="sr-only" for="share-url">공개 빌드 주소</label><input id="share-url" readonly><div class="dialog-actions"><button id="copy-share-url" class="button primary">주소 복사</button></div></dialog>
   <dialog id="delete-public-dialog" aria-labelledby="delete-public-title"><h2 id="delete-public-title">공개 빌드를 삭제할까요?</h2><p id="delete-public-name"></p><p>공개 목록과 공유 주소에서 사라집니다. 브라우저에 저장한 복사본은 유지됩니다.</p><p id="delete-public-status" role="status"></p><div class="dialog-actions"><button class="button" data-close-dialog>취소</button><button id="delete-public-confirm" class="button primary">공개 빌드 삭제</button></div></dialog>
-  <dialog id="souvenir-dialog" aria-labelledby="souvenir-dialog-title"><button class="dialog-close" aria-label="닫기" data-close-dialog>×</button><div class="dialog-eyebrow">HILDA · BONE CHARM</div><div class="souvenir-dialog-heading"><h2 id="souvenir-dialog-title">뼈 부적 기념품</h2><strong id="souvenir-selection-count" role="status" aria-live="polite"></strong></div><p id="souvenir-limit-note">효과를 최대 3개 선택하세요. 다른 효과로 바꾸려면 선택한 기념품을 먼저 해제해주세요.</p><div class="souvenir-table-wrap"><table class="souvenir-table"><caption class="sr-only">힐다 기념품별 전리품, 효과, 기본값과 최대치</caption><thead><tr><th scope="col">전리품</th><th scope="col">효과</th><th scope="col">기본값</th><th scope="col">최대치</th></tr></thead><tbody id="souvenir-options"></tbody></table></div><div class="souvenir-dialog-footer"><p>선택한 효과의 기본값과 최대치를 함께 표시합니다.</p><button class="button primary" data-close-dialog>선택 완료</button></div></dialog>
+  <dialog id="souvenir-dialog" aria-labelledby="souvenir-dialog-title"><button class="dialog-close" aria-label="닫기" data-close-dialog>×</button><div class="dialog-eyebrow">HILDA · BONE CHARM</div><div class="souvenir-dialog-heading"><h2 id="souvenir-dialog-title">뼈 부적 기념품</h2><strong id="souvenir-selection-count" role="status" aria-live="polite"></strong></div><p id="souvenir-limit-note">효과를 최대 3개 선택하세요. 다른 효과로 바꾸려면 선택한 기념품을 먼저 해제해주세요.</p><div class="souvenir-table-wrap"><table class="souvenir-table"><caption class="sr-only">힐다 기념품별 전리품, 효과, 기본값과 최대치</caption><thead><tr><th scope="col">전리품</th><th scope="col">효과</th><th scope="col">기본값</th><th scope="col">최대치</th></tr></thead><tbody id="souvenir-options"></tbody></table></div><div class="souvenir-dialog-footer"><button class="button primary" data-close-dialog>선택 완료</button></div></dialog>
   <dialog id="library-dialog"><button class="dialog-close" aria-label="닫기" data-close-dialog>×</button><div class="dialog-eyebrow">SAVED BUILDS</div><h2>내 빌드</h2><p>이 브라우저에 저장한 빌드입니다.</p><div id="library-list"></div></dialog>
   <dialog id="reset-dialog"><h2>빌드를 초기화할까요?</h2><p>현재 캐릭터를 유지하고 1레벨부터 다시 시작합니다.<br>빌드 설명과 투자 내역, 최종 장비 계획과 티어별 운영 설명이 초기화됩니다. 저장한 빌드는 유지됩니다.</p><div class="dialog-actions"><button class="button" data-close-dialog>계속 편집</button><button id="confirm-reset" class="button primary">초기화</button></div></dialog>
 </body>

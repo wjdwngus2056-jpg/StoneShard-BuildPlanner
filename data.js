@@ -5,13 +5,13 @@
     {id:'perception',name:'인지력',english:'PER'}, {id:'vitality',name:'생명력',english:'VIT'}, {id:'willpower',name:'의지력',english:'WIL'}
   ];
   const characters = [
-    {id:'arna',name:'아르나',english:'Arna',role:'여기사',values:[11,11,10,11,10],trait:'위업의 맹세',description:'레벨이 오를수록 긍정적인 정신 상태의 효과가 강해집니다. 정신 상태에 따른 효과는 전투 상황에 따라 달라집니다.'},
+    {id:'arna',name:'아르나',english:'Arna',role:'여기사',values:[11,11,10,11,10],trait:'위업의 맹세',description:'레벨이 오를수록 긍정적인 정신 상태의 효과가 강해집니다.'},
     {id:'jorgrim',name:'요르그림',english:'Jorgrim',role:'약탈자',values:[11,10,11,11,10],trait:'피와 영광',description:'서로 다른 전리품을 처음 반납할 때, 3종마다 능력치 포인트 1 SP를 얻습니다. 최대 5회 적용됩니다.',statBonus:{key:'trophy-rewards',max:5,detail:'전리품 15종의 첫 반납 보상을 모두 획득한 것으로 계산합니다.',source:'https://stoneshard.com/wiki/Jorgrim'}},
-    {id:'dirwin',name:'디르윈',english:'Dirwin',role:'숲지기',values:[10,11,11,11,10],trait:'숲지기의 재능',description:'생존 계열에 직접 3 AP를 투자할 때마다 추가 1 AP를 얻습니다. 시작 시 습득한 기술은 투자량에서 제외합니다. 특성의 능력치 포인트 보상은 최대 3 SP입니다.',bonus:'survival',bonusCap:3,statBonus:{key:'survival-stat-rewards',max:3,detail:'특성의 능력치 포인트 보상을 최대 3 SP까지 획득한 것으로 계산합니다.',source:'https://stoneshard-00.web.app/',confirmedBy:'user'}},
-    {id:'jonna',name:'요나',english:'Jonna',role:'탈주 마법사',values:[10,10,11,11,11],trait:'마법적 학식',description:'문헌과 마법 학습을 통해 성장하는 마법사. 소지한 마법서에 따른 전투 보너스는 계산에 포함하지 않습니다.'},
+    {id:'dirwin',name:'디르윈',english:'Dirwin',role:'숲지기',values:[10,11,11,11,10],trait:'숲지기의 재능',description:'생존 계열에 3 AP를 투자할 때마다 +1 AP를 얻습니다. 능력치 보상은 최대 +3 SP입니다.',bonus:'survival',bonusCap:3,statBonus:{key:'survival-stat-rewards',max:3,detail:'특성의 능력치 포인트 보상을 최대 3 SP까지 획득한 것으로 계산합니다.',source:'https://stoneshard-00.web.app/',confirmedBy:'user'}},
+    {id:'jonna',name:'요나',english:'Jonna',role:'탈주 마법사',values:[10,10,11,11,11],trait:'마법적 학식',description:'문헌과 마법 학습을 통해 성장하는 마법사.'},
     {id:'velmir',name:'벨미르',english:'Velmir',role:'복수자',values:[11,11,11,10,10],trait:'위대한 복수',description:'보스를 처치할 때마다 능력치 포인트 2 SP를 얻습니다. 현재 모험 모드의 트롤·만티코어 보상은 합계 4 SP입니다.',statBonus:{key:'boss-rewards',max:4,detail:'트롤·만티코어 처치 보상을 모두 획득한 것으로 계산합니다.',source:'https://stoneshard.com/wiki/Velmir',bossSource:'https://stoneshard.com/wiki/Enemies#Bosses'}},
     {id:'mahir',name:'마히르',english:'Mahir',role:'순례자',values:[10,11,11,10,11],trait:'끝없는 여정',description:'한 계열에 직접 6 AP를 투자하면 추가 1 AP를 얻습니다. 계열마다 한 번씩, 총 5회까지 적용합니다.',bonus:'trees',bonusCap:5},
-    {id:'leosthenes',name:'레오스테네스',english:'Leosthenes',role:'지휘관',values:[11,10,10,11,11],trait:'무력과 마력',description:'무기 기술과 마법을 함께 익히는 전사. 각 계열의 투자량에 따른 파생 전투 능력치는 검증 중입니다.'},
+    {id:'leosthenes',name:'레오스테네스',english:'Leosthenes',role:'지휘관',values:[11,10,10,11,11],trait:'무력과 마력',description:'무기 기술과 마법을 함께 익히는 전사.'},
     {id:'hilda',name:'힐다',english:'Hilda',role:'괴물 사냥꾼',values:[11,11,10,11,10],trait:'야생의 사냥',description:'임기응변을 습득한 상태로 시작합니다. 뼈 부적에 붙일 기념품 효과를 최대 3개까지 선택할 수 있습니다.'}
   ];
   const trees = [

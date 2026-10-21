@@ -355,3 +355,77 @@ test('legacy equipment remains accessible in a collapsed escaped archive after m
   assert.equal(restored.bridge.getBuild().equipmentPlan.equipment.mainHand,'');
   assert.equal(restored.bridge.getBuild().legacyEquipmentPlans[1].equipment.mainHand,'<초반 검>');
 });
+
+
+test('investment summary counts paid skills, hides free starts, and follows learn, refund and undo', () => {
+  for (const hero of ['arna','dirwin','hilda']) {
+    const ui=editor(P.fresh(hero));
+    assert.equal(ui.element('#ability-investments').hidden,true);
+    assert.equal(ui.element('#ability-investments').innerHTML,'');
+  }
+  const ui=editor(),summary=ui.element('#ability-investments');
+  ui.doubleSkill('sword-cleaving-strike');
+  assert.equal(summary.hidden,false);
+  assert.match(summary.innerHTML,/aria-label="검 1개 투자 · 계열 보기"/);
+  assert.doesNotMatch(summary.innerHTML,/data-tree="survival"/);
+  ui.click('survival-tree',{tree:'survival'});
+  ui.click('sword-investment',{tree:'sword'});
+  assert.equal(ui.element('#tree-subtitle').textContent,P.byTree.sword.english);
+  ui.doubleSkill('sword-cleaving-strike');
+  assert.equal(summary.hidden,true);
+  ui.undo();assert.match(summary.innerHTML,/aria-label="검 1개 투자 · 계열 보기"/);
+});
+
+test('investment summary ranks paid trees and reflects the viewed level without deleting future allocations', () => {
+  const initial=P.demo(),ui=editor(initial),summary=ui.element('#ability-investments');
+  const counts=()=>[...summary.innerHTML.matchAll(/aria-label="([^"]+) (\d+)개 투자 · 계열 보기"/g)].map(([,name,count])=>[name,Number(count)]);
+  assert.deepEqual(counts(),[['검',5],['방패',2]]);
+  assert.ok(summary.innerHTML.includes('<img src="assets/skills/'));
+  ui.click('view-level-1',{level:'1'});
+  assert.deepEqual(counts(),[['검',1],['방패',1]]);
+  assert.equal(summary.getAttribute('aria-label'),'Lv.1 계열별 기술 투자');
+  assert.deepEqual(ui.build().events,initial.events);
+  ui.click('view-level-10',{level:'10'});
+  assert.deepEqual(counts(),[['검',5],['방패',2]]);
+  ui.click('choose-dirwin',{character:'dirwin'});assert.equal(summary.hidden,true);
+  ui.undo();assert.deepEqual(counts(),[['검',5],['방패',2]]);
+});
+
+test('public investment summary supports tree and level navigation while preserving the private draft', () => {
+  const ui=editor(P.fresh('hilda')),before=ui.storage.get(`${storageKey}-draft`),summary=ui.element('#ability-investments');
+  ui.bridge.openPublic({build:P.demo(),level:10,trees:['sword']});
+  assert.match(summary.innerHTML,/aria-label="검 5개 투자/);
+  ui.click('shield-investment',{tree:'shield'});
+  assert.equal(ui.element('#tree-subtitle').textContent,P.byTree.shield.english);
+  ui.click('view-level-1',{level:'1'});
+  assert.match(summary.innerHTML,/aria-label="방패 1개 투자/);
+  assert.equal(ui.storage.get(`${storageKey}-draft`),before);
+  ui.bridge.returnPrivate();assert.equal(summary.hidden,true);
+});
+
+test('level unlock is an equal alternative route with live status and still requires prerequisite skills', () => {
+  const initial=P.fresh();initial.level=9;
+  const ui=editor(initial),detail=ui.element('#skill-detail');
+  ui.skillClick('sword-gloat');
+  const routeClass=route=>detail.innerHTML.match(new RegExp(`<div class="unlock-route ([^"]*)" data-route="${route}">`))?.[1];
+  assert.notEqual(routeClass('treatise'),undefined);
+  assert.notEqual(routeClass('attributes'),undefined);
+  assert.equal(routeClass('level'),'');
+  assert.ok(detail.innerHTML.includes('레벨 10 도달'));
+  assert.match(detail.innerHTML,/data-prerequisites-met="false"/);
+  assert.ok(!detail.innerHTML.includes('action-reason'));
+  ui.click('view-level-10',{level:'10'});
+  assert.equal(routeClass('level'),'met');
+  assert.equal(routeClass('attributes'),'');
+  ui.doubleSkill('sword-gloat');
+  assert.equal(ui.build().events.length,0);
+  assert.ok(ui.element('#toast').textContent.includes('선행 기술 필요'));
+  ui.click('read-sword-2',{book:'sword:2'});
+  assert.equal(routeClass('treatise'),'met');
+  assert.ok(detail.innerHTML.includes('Lv.10 읽음 ✓'));
+  ui.skillClick('sword-cleaving-strike');
+  assert.equal(routeClass('attributes'),undefined);
+  assert.equal(routeClass('level'),undefined);
+  ui.skillClick('survival-butchering');
+  assert.doesNotMatch(detail.innerHTML,/data-route=/);
+});
