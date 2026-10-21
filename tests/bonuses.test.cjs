@@ -126,3 +126,25 @@ test('old builds load with optional rewards off and their investments intact',()
   assert.equal(build.events.length,2);assert.equal(view.statBonus,0);assert.equal(view.eventBonus,0);assert.equal(view.statPoints,1);
   assert.equal(build.name,old.name);assert.deepEqual(P.normalize(build),build);
 });
+
+
+test('learned totals include each starting skill while Dirwin AP rewards still count direct investment only',()=>{
+  const D=require('../data.js');
+  for(const hero of D.characters){
+    const view=P.replay(P.fresh(hero.id));
+    assert.deepEqual(view.learnedCounts,{survival:hero.free.length});
+    assert.deepEqual(view.counts,{});assert.equal(view.spentSkills,0);
+  }
+  const build=P.fresh('dirwin');build.level=2;
+  build.events=[{id:'book',level:1,type:'treatise',key:'survival:1'},
+    {id:'first',level:1,type:'skill',key:'survival-cauterize-wounds'},
+    {id:'second',level:1,type:'skill',key:'survival-austerity'}];
+  const first=P.replay(build);
+  assert.equal(first.learnedCounts.survival,4);assert.equal(first.counts.survival,2);
+  assert.equal(first.bonus,0);assert.equal(first.skillPoints,1);
+  build.events.push({id:'third',level:2,type:'skill',key:'survival-first-aid'});
+  const next=P.replay(build);
+  assert.equal(next.learnedCounts.survival,5);assert.equal(next.counts.survival,3);
+  assert.equal(next.bonus,1);assert.equal(next.skillPoints,1);
+  assert.equal(Object.values(next.learnedCounts).reduce((a,b)=>a+b,0),next.learned.size);
+});

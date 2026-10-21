@@ -227,14 +227,14 @@
   }
 
   function renderInvestments(view) {
-    const invested = D.trees.filter(tree => view.counts[tree.id] > 0)
-      .sort((a,b) => view.counts[b.id] - view.counts[a.id]);
+    const invested = D.trees.filter(tree => view.learnedCounts[tree.id] > 0)
+      .sort((a,b) => view.learnedCounts[b.id] - view.learnedCounts[a.id]);
     const summary = $('#ability-investments');
     summary.hidden = !invested.length;
-    summary.setAttribute('aria-label', `Lv.${build.level} 계열별 기술 투자`);
+    summary.setAttribute('aria-label', `Lv.${build.level} 계열별 습득 기술`);
     summary.innerHTML = invested.map(tree => {
-      const skill = D.skills.find(skill => skill.tree === tree.id), count = view.counts[tree.id];
-      return `<button class="investment-chip" data-tree="${tree.id}" data-category-color="${tree.category}" aria-pressed="${tree.id === treeId}" aria-label="${tree.name} ${count}개 투자 · 계열 보기" title="직접 투자한 기술 · Lv.${build.level} 기준">${image(skill.image,'')}<span>${tree.name}</span><strong>${count}</strong></button>`;
+      const skill = D.skills.find(skill => skill.tree === tree.id), count = view.learnedCounts[tree.id];
+      return `<button class="investment-chip" data-tree="${tree.id}" data-category-color="${tree.category}" aria-pressed="${tree.id === treeId}" aria-label="${tree.name} ${count}개 습득 · 계열 보기" title="습득한 기술 · Lv.${build.level} 기준">${image(skill.image,'')}<span>${tree.name}</span><strong>${count}</strong></button>`;
     }).join('');
   }
 

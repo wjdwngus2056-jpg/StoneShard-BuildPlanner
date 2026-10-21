@@ -80,14 +80,14 @@ test('unconfigured public features report connection state instead of inventing 
 });
 
 
-test('public cards show icons and paid counts for all invested trees before opening the build',async()=>{
+test('public cards show icons and learned counts including free starts before opening the build',async()=>{
   const build=P.demo();build.events.push({id:'survival',level:10,type:'skill',key:'survival-cauterize-wounds'},
     {id:'book',level:10,type:'treatise',key:'athletics:1'},
     {id:'athletics',level:10,type:'skill',key:'athletics-disengage'});
   const ui=fixture({hash:'#community',publishedBuild:build});await settle();
   const markup=ui.node('#community-list').innerHTML;
-  const badges=[...markup.matchAll(/role="listitem" aria-label="([^"]+) (\d+)개 투자"/g)].map(([,name,count])=>[name,Number(count)]);
-  assert.deepEqual(badges,[['검',5],['방패',2],['체술',1],['생존',1]]);
+  const badges=[...markup.matchAll(/role="listitem" aria-label="([^"]+) (\d+)개 습득"/g)].map(([,name,count])=>[name,Number(count)]);
+  assert.deepEqual(badges,[['검',5],['방패',2],['생존',2],['체술',1]]);
   assert.equal((markup.match(/alt="" draggable="false"/g)||[]).length,4);
   assert.ok(!markup.includes('public-card-trees'));
   assert.ok(!ui.calls.some(call=>call[0]==='get'));
@@ -96,9 +96,10 @@ test('public cards show icons and paid counts for all invested trees before open
   assert.ok(ui.calls.some(call=>call[0]==='get'&&call[1]===id));
 });
 
-test('public cards with no paid skills omit investment badges instead of counting free starting skills',async()=>{
+test('public cards include free starting skills before any AP is spent',async()=>{
   const ui=fixture({hash:'#community',publishedBuild:P.fresh('dirwin')});await settle();
   const markup=ui.node('#community-list').innerHTML;
-  assert.ok(!markup.includes('public-card-investments'));
+  assert.ok(markup.includes('public-card-investments'));
+  assert.ok(markup.includes('aria-label="생존 2개 습득"'));
   assert.ok(markup.includes('data-public-open='));
 });

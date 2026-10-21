@@ -74,7 +74,13 @@
       } else { rejected.push(event); continue; }
       accepted.push(event);
     }
-    return { values, learned, books, counts, rewards, permanentBonuses, souvenirs:souvenirChoices(build), bonus, statBonus, eventBonus, spentStats, spentSkills, statPoints: atLevel - 1 + statBonus + eventBonus - spentStats, skillPoints: 1 + atLevel + bonus - spentSkills, accepted, rejected };
+    // Display totals include free starting skills; AP/trait counts stay separate.
+    const learnedCounts = {};
+    for (const id of learned) {
+      const tree = bySkill[id].tree;
+      learnedCounts[tree] = (learnedCounts[tree] || 0) + 1;
+    }
+    return { values, learned, books, counts, learnedCounts, rewards, permanentBonuses, souvenirs:souvenirChoices(build), bonus, statBonus, eventBonus, spentStats, spentSkills, statPoints: atLevel - 1 + statBonus + eventBonus - spentStats, skillPoints: 1 + atLevel + bonus - spentSkills, accepted, rejected };
   }
 
   function normalize(input) {

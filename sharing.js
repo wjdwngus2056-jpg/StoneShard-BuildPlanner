@@ -35,7 +35,7 @@
     // Read only the event projection, so older publications need no migration.
     const events=Array.isArray(row.investment_events)&&row.investment_events.length<=limits.events?row.investment_events:[];
     const plan=P.normalize({schemaVersion:2,characterId:row.character_id,level:row.level,events});
-    const {counts}=P.replay(plan);
+    const {learnedCounts:counts}=P.replay(plan);
     const investments=D.trees.filter(tree=>counts[tree.id]>0).sort((a,b)=>counts[b.id]-counts[a.id]).map(tree=>({tree:tree.id,count:counts[tree.id]}));
     return {investments,id:row.id,owner_id:row.owner_id,title:text(row.title,limits.title),author_name:text(row.author_name,limits.author),summary:text(row.summary,limits.summary),character_id:row.character_id,level:P.clampLevel(row.level),trees:Array.isArray(row.trees)?[...new Set(row.trees)].filter(id=>Object.hasOwn(P.byTree,id)).slice(0,3):[],created_at:text(row.created_at,40),updated_at:text(row.updated_at,40)};
   }

@@ -62,7 +62,7 @@ test('anonymous listing requests card metadata and the event projection with bou
   assert.equal(result.items.length,1);assert.ok(calls.some(call=>call[0]==='range'&&call[1]===36&&call[2]===53));
   const select=calls.find(call=>call[0]==='select');assert.ok(!select[1].split(',').includes('build'));
   assert.ok(select[1].split(',').includes('investment_events:build->events'));
-  assert.deepEqual(result.items[0].investments,[{tree:'sword',count:5},{tree:'shield',count:2}]);
+  assert.deepEqual(result.items[0].investments,[{tree:'sword',count:5},{tree:'shield',count:2},{tree:'survival',count:1}]);
   assert.ok(calls.some(call=>call[0]==='eq'&&call[1]==='character_id'&&call[2]==='arna'));
   assert.ok(calls.some(call=>call[0]==='ilike'&&call[2]==='%검\\_100\\%%'));
 });
@@ -90,7 +90,7 @@ test('Google login uses PKCE and signout is limited to this browser session',asy
 });
 
 
-test('existing card event snapshots expose every paid tree and rank ties consistently with the editor',()=>{
+test('existing card event snapshots expose every learned tree and rank ties consistently with the editor',()=>{
   const build=P.demo();
   build.events.push({id:'survival',level:10,type:'skill',key:'survival-cauterize-wounds'},
     {id:'book',level:10,type:'treatise',key:'athletics:1'},
@@ -98,23 +98,23 @@ test('existing card event snapshots expose every paid tree and rank ties consist
   const stored=row(build);
   assert.equal(stored.trees.length,3);
   const card=S.readCard(stored),view=P.replay(P.normalize(build));
-  assert.deepEqual(card.investments,[{tree:'sword',count:5},{tree:'shield',count:2},{tree:'athletics',count:1},{tree:'survival',count:1}]);
-  assert.equal(card.investments.reduce((sum,item)=>sum+item.count,0),view.spentSkills);
+  assert.deepEqual(card.investments,[{tree:'sword',count:5},{tree:'shield',count:2},{tree:'survival',count:2},{tree:'athletics',count:1}]);
+  assert.equal(card.investments.reduce((sum,item)=>sum+item.count,0),view.learned.size);
   assert.ok(!Object.hasOwn(card,'build'));assert.ok(!Object.hasOwn(card,'investment_events'));
   const early=S.readCard({...stored,level:1});
-  assert.deepEqual(early.investments,[{tree:'sword',count:1},{tree:'shield',count:1}]);
+  assert.deepEqual(early.investments,[{tree:'sword',count:1},{tree:'shield',count:1},{tree:'survival',count:1}]);
 });
 
-test('card counts exclude free starts, invalid or duplicate investments, and absent or oversized event projections',()=>{
-  for(const hero of ['arna','dirwin','hilda'])assert.deepEqual(S.readCard(row(P.fresh(hero))).investments,[]);
+test('card counts include free starts once while excluding invalid or duplicate investments',()=>{
+  for(const hero of ['arna','dirwin','hilda'])assert.deepEqual(S.readCard(row(P.fresh(hero))).investments,[{tree:'survival',count:P.character(hero).free.length}]);
   const build=P.fresh('dirwin');build.level=10;
   build.events=[{id:'free',type:'skill',key:'survival-make-a-halt',level:1},
     {id:'paid',type:'skill',key:'survival-cauterize-wounds',level:1},
     {id:'duplicate',type:'skill',key:'survival-cauterize-wounds',level:2},
     {id:'locked',type:'skill',key:'sword-gloat',level:2},
     {id:'unknown',type:'skill',key:'not-a-skill',level:2}];
-  assert.deepEqual(S.readCard(row(build)).investments,[{tree:'survival',count:1}]);
+  assert.deepEqual(S.readCard(row(build)).investments,[{tree:'survival',count:3}]);
   for(const investment_events of [undefined,null,{},new Array(S.limits.events+1).fill(null)]){
-    assert.deepEqual(S.readCard({...row(),investment_events}).investments,[]);
+    assert.deepEqual(S.readCard({...row(),investment_events}).investments,[{tree:'survival',count:1}]);
   }
 });
