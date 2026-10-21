@@ -6,7 +6,7 @@
   const clone = value => JSON.parse(JSON.stringify(value));
   const STORAGE = 'wayfarer-prototype-v1', DRAFT = `${STORAGE}-draft`;
   const roman = ['', 'I', 'II', 'III', 'IV'];
-  let build = P.demo(), treeId = 'sword', category = 'weapon', selectedId = 'sword-fencer-stance';
+  let build = P.fresh(), treeId = 'sword', category = 'weapon', selectedId = 'sword-cleaving-strike';
   let history = [], library = [], toastTimer, detailTab = 'effects';
   let guideTier = 1, guideEdit = null;
   let publicView = null, privateSnapshot = null;
@@ -249,7 +249,7 @@
     renderGuide();renderOverview();
     if (!$('#search-area').hidden) renderSearch();
     const reading=Boolean(publicView);
-    for(const key of ['reset','save','load-demo'])$(`#${key}`).disabled=reading;
+    for(const key of ['reset','save'])$(`#${key}`).disabled=reading;
     $('#undo').disabled=reading||!history.length;$('#build-name').readOnly=reading;
     if(reading){
       document.querySelectorAll('[data-character],[data-stat-add],[data-stat-remove],[data-book],[data-guide-field],[data-overview-field],[data-souvenir],[data-reward-toggle],[data-reward-choice],#trait-max-toggle,#copy-previous-equipment,#learn-action').forEach(control=>{control.disabled=true;});
@@ -428,7 +428,6 @@
   $('#undo').addEventListener('click',()=>{if(publicView||!history.length)return;build=history.pop();persist();render();notify('이전 변경을 복원했습니다.');});
   $('#reset').addEventListener('click',()=>$('#reset-dialog').showModal());
   $('#confirm-reset').addEventListener('click',()=>{update(()=>{window.WayfarerCommunity?.forgetEdit?.();build=P.fresh(build.characterId);},'1레벨에서 새 계획을 시작합니다.');$('#reset-dialog').close();});
-  $('#load-demo').addEventListener('click',()=>update(()=>{window.WayfarerCommunity?.forgetEdit?.();build=P.demo();treeId='sword';category='weapon';selectedId='sword-fencer-stance';},'예시 빌드를 불러왔습니다.'));
   $('#save').addEventListener('click',()=>{
     if(publicView){notify('공개 빌드를 복사한 뒤 저장해주세요.');return;}
     if(library.length>=20){notify('최대 20개까지 저장할 수 있습니다. 내 빌드에서 공간을 정리해주세요.');return;}
