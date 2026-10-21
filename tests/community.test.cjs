@@ -9,7 +9,7 @@ const S=require('../sharing.js');
 const source=fs.readFileSync(path.join(__dirname,'../community.js'),'utf8');
 const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');
 const id='22222222-2222-4222-8222-222222222222',owner='11111111-1111-4111-8111-111111111111';
-function fixture({hash='#builder',loggedIn=false,configured=true}={}){
+function fixture({hash='#builder',loggedIn=false,configured=true,publishedBuild=P.demo()}={}){
   const nodes=new Map(),docEvents=new Map(),winEvents=new Map(),storage=new Map(),calls=[];
   const ids=new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]));
   function node(selector){
@@ -25,9 +25,9 @@ function fixture({hash='#builder',loggedIn=false,configured=true}={}){
   }
   let current=null,plan=P.demo(),hashValue=hash;
   const location={origin:'https://example.pages.dev',pathname:'/',search:'',get hash(){return hashValue;},set hash(value){const next=value.startsWith('#')?value:`#${value}`;if(next===hashValue)return;hashValue=next;queueMicrotask(()=>winEvents.get('hashchange')?.());},get href(){return `${location.origin}${location.pathname}${location.search}${hashValue}`;}};
-  let published={...S.publication(P.demo(),'작성자','<script>소개</script>'),id,owner_id:owner,created_at:'2026-10-21T00:00:00Z',updated_at:'2026-10-21T00:00:00Z'};
+  let published={...S.publication(publishedBuild,'작성자','<script>소개</script>'),id,owner_id:owner,created_at:'2026-10-21T00:00:00Z',updated_at:'2026-10-21T00:00:00Z'};
   const session=loggedIn?{user:{id:owner,user_metadata:{full_name:'작성자'}}}:null;
-  const api={configured,session:async()=>session,watch:async()=>{},list:async options=>{calls.push(['list',options]);return {items:[published],count:1};},get:async key=>{calls.push(['get',key]);return published;},
+  const api={configured,session:async()=>session,watch:async()=>{},list:async options=>{calls.push(['list',options]);return {items:[S.readCard({...published,investment_events:published.build.events})],count:1};},get:async key=>{calls.push(['get',key]);return published;},
     signIn:async url=>calls.push(['signIn',url]),signOut:async()=>{},remove:async key=>calls.push(['remove',key]),
     save:async(build,author,summary,target)=>{calls.push(['save',build,author,summary,target]);published={...S.publication(build,author,summary),id,owner_id:owner,created_at:published.created_at,updated_at:published.updated_at};return published;}};
   const editor={getBuild:()=>structuredClone(plan),getPublic:()=>current?structuredClone(current):null,
@@ -77,4 +77,28 @@ test('unconfigured public features report connection state instead of inventing 
   const ui=fixture({hash:'#community',configured:false});await settle();
   assert.ok(!ui.calls.some(call=>call[0]==='list'));
   assert.equal(ui.node('#community-list').innerHTML,'');assert.ok(ui.node('#community-status').textContent.includes('준비 중'));
+});
+
+
+test('public cards show icons and paid counts for all invested trees before opening the build',async()=>{
+  const build=P.demo();build.events.push({id:'survival',level:10,type:'skill',key:'survival-cauterize-wounds'},
+    {id:'book',level:10,type:'treatise',key:'athletics:1'},
+    {id:'athletics',level:10,type:'skill',key:'athletics-disengage'});
+  const ui=fixture({hash:'#community',publishedBuild:build});await settle();
+  const markup=ui.node('#community-list').innerHTML;
+  const badges=[...markup.matchAll(/role="listitem" aria-label="([^"]+) (\d+)개 투자"/g)].map(([,name,count])=>[name,Number(count)]);
+  assert.deepEqual(badges,[['검',5],['방패',2],['체술',1],['생존',1]]);
+  assert.equal((markup.match(/alt="" draggable="false"/g)||[]).length,4);
+  assert.ok(!markup.includes('public-card-trees'));
+  assert.ok(!ui.calls.some(call=>call[0]==='get'));
+  assert.equal((markup.match(/<button/g)||[]).length,2);
+  ui.click({publicOpen:id});await settle();
+  assert.ok(ui.calls.some(call=>call[0]==='get'&&call[1]===id));
+});
+
+test('public cards with no paid skills omit investment badges instead of counting free starting skills',async()=>{
+  const ui=fixture({hash:'#community',publishedBuild:P.fresh('dirwin')});await settle();
+  const markup=ui.node('#community-list').innerHTML;
+  assert.ok(!markup.includes('public-card-investments'));
+  assert.ok(markup.includes('data-public-open='));
 });

@@ -41,7 +41,7 @@
       async signOut(){const client=await connect(),{error}=await client.auth.signOut({scope:'local'});fail(error);},
       async list({page=0,character='',search='',mine=false}={}){
         const client=await connect(),offset=Math.max(0,Math.trunc(page)||0)*S.limits.pageSize;
-        let query=client.from('published_builds').select(columns,{count:'exact'}).order('created_at',{ascending:false}).order('id',{ascending:false});
+        let query=client.from('published_builds').select(`${columns},investment_events:build->events`,{count:'exact'}).order('created_at',{ascending:false}).order('id',{ascending:false});
         if(character){if(!D.characters.some(hero=>hero.id===character))throw new Error('캐릭터를 확인해주세요.');query=query.eq('character_id',character);}
         if(search.trim())query=query.ilike('title',`%${search.trim().slice(0,60).replace(/[\\%_]/g,'\\$&')}%`);
         if(mine)query=query.eq('owner_id',(await user()).id);

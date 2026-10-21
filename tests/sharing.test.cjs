@@ -5,7 +5,7 @@ const S=require('../sharing.js');
 const C=require('../cloud.js');
 const owner='11111111-1111-4111-8111-111111111111',id='22222222-2222-4222-8222-222222222222';
 const settings={supabaseUrl:'https://example.supabase.co',supabasePublishableKey:'sb_publishable_test'};
-function row(){return {...S.publication(P.demo(),'작성자','설명'),id,owner_id:owner,created_at:'2026-10-21T00:00:00Z',updated_at:'2026-10-21T00:00:00Z'};}
+function row(build=P.demo()){return {...S.publication(build,'작성자','설명'),investment_events:build.events,id,owner_id:owner,created_at:'2026-10-21T00:00:00Z',updated_at:'2026-10-21T00:00:00Z'};}
 function driver(response={data:row(),error:null}){
   const calls=[];let loggedIn=true;
   const query={};
@@ -56,11 +56,13 @@ test('cloud configuration accepts only public keys and keeps an unconfigured bui
   assert.throws(()=>C.configuration({...settings,supabasePublishableKey:jwt('service_role')}));
   assert.throws(()=>C.configuration({...settings,supabaseUrl:'http://example.supabase.co'}));
 });
-test('anonymous listing requests only card metadata with bounded pagination and character filters',async()=>{
+test('anonymous listing requests card metadata and the event projection with bounded pagination and character filters',async()=>{
   const {cloud,calls}=driver({data:[row()],count:1,error:null});
   const result=await cloud.list({page:2,character:'arna',search:'검_100%'});
   assert.equal(result.items.length,1);assert.ok(calls.some(call=>call[0]==='range'&&call[1]===36&&call[2]===53));
   const select=calls.find(call=>call[0]==='select');assert.ok(!select[1].split(',').includes('build'));
+  assert.ok(select[1].split(',').includes('investment_events:build->events'));
+  assert.deepEqual(result.items[0].investments,[{tree:'sword',count:5},{tree:'shield',count:2}]);
   assert.ok(calls.some(call=>call[0]==='eq'&&call[1]==='character_id'&&call[2]==='arna'));
   assert.ok(calls.some(call=>call[0]==='ilike'&&call[2]==='%검\\_100\\%%'));
 });
@@ -85,4 +87,34 @@ test('Google login uses PKCE and signout is limited to this browser session',asy
   assert.equal(calls.find(call=>call[0]==='oauth')[1].provider,'google');
   assert.equal(calls.find(call=>call[0]==='oauth')[1].options.redirectTo,'https://example.com/#publish');
   assert.equal(calls.find(call=>call[0]==='logout')[1].scope,'local');
+});
+
+
+test('existing card event snapshots expose every paid tree and rank ties consistently with the editor',()=>{
+  const build=P.demo();
+  build.events.push({id:'survival',level:10,type:'skill',key:'survival-cauterize-wounds'},
+    {id:'book',level:10,type:'treatise',key:'athletics:1'},
+    {id:'athletics',level:10,type:'skill',key:'athletics-disengage'});
+  const stored=row(build);
+  assert.equal(stored.trees.length,3);
+  const card=S.readCard(stored),view=P.replay(P.normalize(build));
+  assert.deepEqual(card.investments,[{tree:'sword',count:5},{tree:'shield',count:2},{tree:'athletics',count:1},{tree:'survival',count:1}]);
+  assert.equal(card.investments.reduce((sum,item)=>sum+item.count,0),view.spentSkills);
+  assert.ok(!Object.hasOwn(card,'build'));assert.ok(!Object.hasOwn(card,'investment_events'));
+  const early=S.readCard({...stored,level:1});
+  assert.deepEqual(early.investments,[{tree:'sword',count:1},{tree:'shield',count:1}]);
+});
+
+test('card counts exclude free starts, invalid or duplicate investments, and absent or oversized event projections',()=>{
+  for(const hero of ['arna','dirwin','hilda'])assert.deepEqual(S.readCard(row(P.fresh(hero))).investments,[]);
+  const build=P.fresh('dirwin');build.level=10;
+  build.events=[{id:'free',type:'skill',key:'survival-make-a-halt',level:1},
+    {id:'paid',type:'skill',key:'survival-cauterize-wounds',level:1},
+    {id:'duplicate',type:'skill',key:'survival-cauterize-wounds',level:2},
+    {id:'locked',type:'skill',key:'sword-gloat',level:2},
+    {id:'unknown',type:'skill',key:'not-a-skill',level:2}];
+  assert.deepEqual(S.readCard(row(build)).investments,[{tree:'survival',count:1}]);
+  for(const investment_events of [undefined,null,{},new Array(S.limits.events+1).fill(null)]){
+    assert.deepEqual(S.readCard({...row(),investment_events}).investments,[]);
+  }
 });

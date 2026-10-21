@@ -28,7 +28,11 @@
   }
   function card(row){
     const hero=P.character(row.character_id);
-    return `<article class="public-card"><button class="public-card-open" data-public-open="${row.id}"><div class="public-card-heading"><img src="${hero.image}" alt="${hero.name}" draggable="false"><div><h2>${esc(row.title)}</h2><p>${hero.name} · Lv.${row.level}</p></div></div><p class="public-card-summary">${esc(row.summary||'한 줄 소개가 없는 빌드입니다.')}</p><div class="public-card-trees">${row.trees.map(id=>`<span>${P.byTree[id].name}</span>`).join('')}</div></button><div class="public-card-footer"><span>${esc(row.author_name)}<small>${date(row.created_at)}</small></span><div><button data-public-share="${row.id}">공유</button>${owned(row)?`<button data-public-edit="${row.id}">수정</button><button data-public-delete="${row.id}" data-public-title="${esc(row.title)}">삭제</button>`:''}</div></div></article>`;
+    const investments=row.investments.map(({tree:id,count})=>{
+      const tree=P.byTree[id],skill=D.skills.find(skill=>skill.tree===id);
+      return `<span class="investment-chip" data-category-color="${tree.category}" role="listitem" aria-label="${tree.name} ${count}개 투자"><img src="${skill.image}" alt="" draggable="false"><span>${tree.name}</span><strong>${count}</strong></span>`;
+    }).join('');
+    return `<article class="public-card"><button class="public-card-open" data-public-open="${row.id}"><div class="public-card-heading"><img src="${hero.image}" alt="${hero.name}" draggable="false"><div><h2>${esc(row.title)}</h2><p>${hero.name} · Lv.${row.level}</p></div></div><p class="public-card-summary">${esc(row.summary||'한 줄 소개가 없는 빌드입니다.')}</p>${investments?`<div class="public-card-investments" role="list" aria-label="계열별 기술 투자">${investments}</div>`:''}</button><div class="public-card-footer"><span>${esc(row.author_name)}<small>${date(row.created_at)}</small></span><div><button data-public-share="${row.id}">공유</button>${owned(row)?`<button data-public-edit="${row.id}">수정</button><button data-public-delete="${row.id}" data-public-title="${esc(row.title)}">삭제</button>`:''}</div></div></article>`;
   }
   async function loadList(){
     const version=++listVersion;$('#community-list').innerHTML='';$('#community-status').textContent='빌드를 불러오는 중입니다.';
