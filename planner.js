@@ -7,8 +7,9 @@
   const character = id => data.characters.find(item => item.id === id) || data.characters[0];
   const clampLevel = level => Math.max(1, Math.min(30, Number.isFinite(Number(level)) ? Math.trunc(Number(level)) : 1));
   const emptyEquipment = () => Object.fromEntries(data.guide.equipmentSlots.map(slot => [slot.id,'']));
-  const emptyTierPlan = () => ({description:'',equipment:emptyEquipment(),enchantments:emptyEquipment(),equipmentNotes:''});
-  const fresh = (id = 'arna') => ({ schemaVersion: 2, characterId: character(id).id, name: `${character(id).name}의 새로운 여정`, level: 1, events: [], rewardChoices: Object.fromEntries(data.rewards.map(reward => [reward.id,reward.choices[0].id])), tierPlans:Object.fromEntries(data.guide.tiers.map(tier => [tier,emptyTierPlan()])), overview:Object.fromEntries(data.guide.overviewFields.map(field=>[field.id,''])), souvenirs:[] });
+  const emptyTierPlan = () => ({description:''});
+  const emptyEquipmentPlan = () => ({equipment:emptyEquipment(),recommendedEnchantments:'',equipmentNotes:''});
+  const fresh = (id = 'arna') => ({ schemaVersion: 2, characterId: character(id).id, name: `${character(id).name}의 새로운 여정`, level: 1, events: [], rewardChoices: Object.fromEntries(data.rewards.map(reward => [reward.id,reward.choices[0].id])), tierPlans:Object.fromEntries(data.guide.tiers.map(tier => [tier,emptyTierPlan()])), overview:Object.fromEntries(data.guide.overviewFields.map(field=>[field.id,''])), equipmentPlan:emptyEquipmentPlan(), legacyEquipmentPlans:{}, souvenirs:[] });
   const bookKey = skill => `${skill.tree}:${Math.max(1, skill.tier)}`;
   const validBooks = new Set(data.skills.filter(skill => skill.tier > 0).map(bookKey));
 
@@ -83,13 +84,29 @@
     const text = (value,limit) => typeof value === 'string' ? value.slice(0,limit) : '';
     for(const field of data.guide.overviewFields)build.overview[field.id]=text(input?.overview?.[field.id],field.max);
     for (const tier of data.guide.tiers) {
-      const source = input?.tierPlans?.[tier], target = build.tierPlans[tier];
-      target.description = text(source?.description,data.guide.limits.description);
-      target.equipmentNotes = text(source?.equipmentNotes,data.guide.limits.equipmentNotes);
+      build.tierPlans[tier].description = text(input?.tierPlans?.[tier]?.description,data.guide.limits.description);
+      // Preserve old per-tier equipment as a bounded, read-only archive.
+      const source = input?.legacyEquipmentPlans?.[tier] || input?.tierPlans?.[tier];
+      const archived = {equipment:emptyEquipment(),enchantments:emptyEquipment(),equipmentNotes:text(source?.equipmentNotes,data.guide.limits.equipmentNotes)};
       for (const slot of data.guide.equipmentSlots) {
-        target.equipment[slot.id] = text(source?.equipment?.[slot.id],data.guide.limits.equipment);
-        target.enchantments[slot.id] = text(source?.enchantments?.[slot.id],data.guide.limits.enchantments);
+        archived.equipment[slot.id] = text(source?.equipment?.[slot.id],data.guide.limits.equipment);
+        archived.enchantments[slot.id] = text(source?.enchantments?.[slot.id],data.guide.limits.enchantments);
       }
+      if (archived.equipmentNotes.trim() || Object.values(archived.equipment).some(value=>value.trim()) || Object.values(archived.enchantments).some(value=>value.trim())) build.legacyEquipmentPlans[tier] = archived;
+    }
+    if (input && Object.hasOwn(input,'equipmentPlan')) {
+      const source = input.equipmentPlan;
+      for (const slot of data.guide.equipmentSlots) build.equipmentPlan.equipment[slot.id] = text(source?.equipment?.[slot.id],data.guide.limits.equipment);
+      for (const field of ['recommendedEnchantments','equipmentNotes']) build.equipmentPlan[field] = text(source?.[field],data.guide.limits[field]);
+    } else {
+      // Migrate once. Explicitly empty new fields must stay empty on later loads.
+      const newest = data.guide.tiers.slice().reverse().map(tier=>build.legacyEquipmentPlans[tier]).filter(Boolean);
+      const latestText = read => newest.map(read).find(value=>value.trim()) || '';
+      for (const slot of data.guide.equipmentSlots) build.equipmentPlan.equipment[slot.id] = latestText(plan=>plan.equipment[slot.id]);
+      build.equipmentPlan.recommendedEnchantments = data.guide.equipmentSlots.map(slot=>{
+        const value=latestText(plan=>plan.enchantments[slot.id]);return value?`${slot.name}: ${value}`:'';
+      }).filter(Boolean).join('\n').slice(0,data.guide.limits.recommendedEnchantments);
+      build.equipmentPlan.equipmentNotes = latestText(plan=>plan.equipmentNotes);
     }
     build.souvenirs = souvenirChoices({...input,characterId:build.characterId}).map(option => option.id);
     for (const reward of data.rewards) {

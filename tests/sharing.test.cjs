@@ -25,11 +25,11 @@ test('publication preserves every plan field and uses the highest planned level 
   const build=P.fresh('hilda');build.level=1;build.events=[{id:'future',level:20,type:'stat',key:'strength'}];
   build.souvenirs=['gulon-liver','troll-gland','energy-horns'];
   build.overview={features:'창을 사용하는 빌드\n운영 소개',pros:'긴 사거리',cons:'위치 선정 필요'};
-  build.tierPlans[4].description='운영\n설명';build.tierPlans[4].equipment.mainHand='창';build.tierPlans[4].enchantments.mainHand='명중률';
+  build.tierPlans[4].description='운영\n설명';build.equipmentPlan.equipment.mainHand='창';build.equipmentPlan.recommendedEnchantments='명중률';build.equipmentPlan.equipmentNotes='선택 이유';
   const payload=S.publication(build,' 작성자 ',' 소개 ');
   assert.equal(payload.level,20);assert.equal(payload.author_name,'작성자');assert.equal(payload.summary,'소개');
   assert.deepEqual(payload.build.tierPlans,build.tierPlans);assert.deepEqual(payload.build.souvenirs,build.souvenirs);
-  assert.deepEqual(payload.build.overview,build.overview);
+  assert.deepEqual(payload.build.overview,build.overview);assert.deepEqual(payload.build.equipmentPlan,build.equipmentPlan);
   assert.equal(build.level,1);
 });
 test('public payloads reject unsupported, oversized or malformed builds and metadata',()=>{

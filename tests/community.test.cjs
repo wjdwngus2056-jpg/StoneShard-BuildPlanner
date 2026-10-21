@@ -63,14 +63,14 @@ test('logged-out publication never uploads data and requests Google login explic
   ui.node('#publish-sign-in').fire('click');await settle();
   assert.ok(ui.calls.some(call=>call[0]==='signIn'&&call[1]==='https://example.pages.dev/#publish'));
 });
-test('explicit logged-in submission includes tier equipment and opens its public share link',async()=>{
+test('explicit logged-in submission includes shared final equipment and tier tactics in its public share link',async()=>{
   const ui=fixture({loggedIn:true});await settle();
-  const plan=P.fresh('hilda');plan.tierPlans[3].description='운영';plan.tierPlans[3].equipment.mainHand='창';plan.tierPlans[3].enchantments.mainHand='명중률';plan.souvenirs=['gulon-liver'];ui.setPlan(plan);
+  const plan=P.fresh('hilda');plan.tierPlans[3].description='운영';plan.equipmentPlan.equipment.mainHand='창';plan.equipmentPlan.recommendedEnchantments='명중률';plan.equipmentPlan.equipmentNotes='선택 이유';plan.souvenirs=['gulon-liver'];ui.setPlan(plan);
   ui.node('#open-publish').fire('click');await settle();
   ui.node('#publish-author').value='빌더';ui.node('#publish-summary').value='내 소개';
   await ui.node('#publish-form').fire('submit');await settle();
   const save=ui.calls.find(call=>call[0]==='save');assert.ok(save);
-  assert.deepEqual(save[1].tierPlans,plan.tierPlans);assert.deepEqual(save[1].souvenirs,plan.souvenirs);assert.equal(save[4],'');
+  assert.deepEqual(save[1].tierPlans,plan.tierPlans);assert.deepEqual(save[1].equipmentPlan,plan.equipmentPlan);assert.deepEqual(save[1].souvenirs,plan.souvenirs);assert.equal(save[4],'');
   assert.equal(ui.node('#share-url').value,`https://example.pages.dev/#build=${id}`);assert.equal(ui.node('#share-dialog').open,true);
 });
 test('unconfigured public features report connection state instead of inventing a local public board',async()=>{

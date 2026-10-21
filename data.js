@@ -65,7 +65,7 @@
   const guide = {
     tiers:[1,2,3,4,5],
     overviewFields:[
-      {id:'features',name:'빌드 특징',max:4000,placeholder:'주력 무기와 기술, 전투 방식, 추천하는 플레이 스타일 등을 적어주세요.'},
+      {id:'features',name:'빌드 특징',max:4000,placeholder:'빌드의 간략한 소개, 캐릭터 선택 이유, 플레이 스타일 등을 적어주세요.'},
       {id:'pros',name:'장점',max:2000,placeholder:'이 빌드의 강점과 유리한 상황을 적어주세요.'},
       {id:'cons',name:'단점',max:2000,placeholder:'취약한 상황, 주의할 적이나 성장 구간 등을 적어주세요.'}
     ],
@@ -75,7 +75,7 @@
       {id:'belt',name:'허리'}, {id:'feet',name:'발'}, {id:'back',name:'등'},
       {id:'neck',name:'목걸이'}, {id:'ringLeft',name:'반지 1'}, {id:'ringRight',name:'반지 2'}
     ],
-    limits:{description:6000,equipmentNotes:2000,equipment:120,enchantments:160}
+    limits:{description:6000,equipmentNotes:2000,equipment:120,enchantments:160,recommendedEnchantments:2000}
   };
   const data={stats,characters,trees,skills:wiki.skills,rewards,legacyMap,guide,souvenirs,source:'https://stoneshard-00.web.app/'};
   root.WAYFARER_DATA=data;

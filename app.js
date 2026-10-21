@@ -166,60 +166,64 @@
     }).join('');
   }
 
-  function equipmentCount(plan) {
-    return D.guide.equipmentSlots.filter(slot => plan.equipment[slot.id].trim() || plan.enchantments[slot.id].trim()).length;
-  }
   function renderGuideStatus() {
     for (const tier of D.guide.tiers) {
-      const plan = build.tierPlans[tier], written = plan.description.trim() || plan.equipmentNotes.trim() || equipmentCount(plan);
+      const written = Boolean(build.tierPlans[tier].description.trim());
       $(`#guide-tab-${tier} .tier-tab-state`).textContent = written ? '작성 중' : '미작성';
-      $(`#guide-tab-${tier}`).classList.toggle('has-content',Boolean(written));
+      $(`#guide-tab-${tier}`).classList.toggle('has-content',written);
     }
     $('#guide-description-count').textContent = `${build.tierPlans[guideTier].description.length.toLocaleString()} / ${D.guide.limits.description.toLocaleString()}`;
-    $('#guide-equipment-count').textContent = `${equipmentCount(build.tierPlans[guideTier])}개 부위 작성`;
   }
   function renderGuide() {
     guideEdit = null;
-    const plan = build.tierPlans[guideTier], previous = build.tierPlans[guideTier-1];
-    const canCopy = previous && (equipmentCount(previous) || previous.equipmentNotes.trim());
+    const plan = build.tierPlans[guideTier];
     $('#tier-guide-tabs').innerHTML = D.guide.tiers.map(tier => `<button id="guide-tab-${tier}" role="tab" data-guide-tier="${tier}" aria-selected="${tier===guideTier}" aria-controls="tier-guide-editor" tabindex="${tier===guideTier?0:-1}"><strong><span>${tier}</span>티어</strong><small class="tier-tab-state"></small></button>`).join('');
     $('#tier-guide-editor').setAttribute('aria-labelledby',`guide-tab-${guideTier}`);
-    const equipmentFields = D.guide.equipmentSlots.map(slot => `<div class="guide-equipment-row"><span class="guide-slot-name">${slot.name}</span><label class="sr-only" for="guide-slot-${slot.id}">${slot.name} 장비명</label><input id="guide-slot-${slot.id}" data-guide-field="equipment" data-guide-slot="${slot.id}" maxlength="${D.guide.limits.equipment}" value="${esc(plan.equipment[slot.id])}" placeholder="장비명" autocomplete="off"><label class="sr-only" for="guide-enchant-${slot.id}">${slot.name} 우선 인챈트 옵션</label><input id="guide-enchant-${slot.id}" data-guide-field="enchantments" data-guide-slot="${slot.id}" maxlength="${D.guide.limits.enchantments}" value="${esc(plan.enchantments[slot.id])}" placeholder="우선 인챈트 옵션" autocomplete="off"></div>`).join('');
-    $('#tier-guide-editor').innerHTML = `<section class="guide-description"><div class="guide-section-title"><h3>${guideTier}티어 운영</h3><span id="guide-description-count"></span></div><label class="sr-only" for="guide-description">${guideTier}티어 운영 설명</label><textarea id="guide-description" data-guide-field="description" maxlength="${D.guide.limits.description}" placeholder="이 티어에서의 운영 방법을 자유롭게 적어주세요&#10;&#10;예)&#10;&#10;- 티어 진입 추천 레벨&#10;- 전투 운영법&#10;- 스킬 콤보&#10;- 빌드 팁&#10;- 의뢰 루트">${esc(plan.description)}</textarea></section><section class="guide-equipment"><div class="guide-section-title"><h3>${guideTier}티어 장비 계획</h3><button id="copy-previous-equipment" class="button quiet" ${canCopy?'':'disabled'}>이전 티어 장비 복사</button></div><p class="guide-equipment-intro">장비명과 우선 인챈트 옵션을 부위별로 나누어 적어주세요.</p><div class="guide-equipment-fields"><div class="guide-equipment-heading" aria-hidden="true"><span>부위</span><span>장비명</span><span>우선 인챈트 옵션</span></div>${equipmentFields}</div><div class="guide-equipment-meta"><span id="guide-equipment-count"></span><span>직접 입력</span></div><label class="guide-notes-label" for="guide-equipment-notes">장비 설명 ( 선택이유 / 교체순서 / 대체장비 등)</label><textarea id="guide-equipment-notes" data-guide-field="equipmentNotes" maxlength="${D.guide.limits.equipmentNotes}" placeholder="선택 이유, 교체 순서, 대체 장비 등을 자유롭게 적어주세요.">${esc(plan.equipmentNotes)}</textarea><p class="guide-field-hint">장비 기록은 능력치·스킬 효과 계산에 반영되지 않습니다.</p></section>`;
+    $('#tier-guide-editor').innerHTML = `<section class="guide-description"><div class="guide-section-title"><h3>${guideTier}티어 운영</h3><span id="guide-description-count"></span></div><label class="sr-only" for="guide-description">${guideTier}티어 운영 설명</label><textarea id="guide-description" data-guide-field="description" maxlength="${D.guide.limits.description}" placeholder="이 티어에서의 운영 방법을 자유롭게 적어주세요&#10;&#10;예)&#10;&#10;- 티어 진입 추천 레벨&#10;- 전투 운영법&#10;- 스킬 콤보&#10;- 빌드 팁&#10;- 의뢰 루트">${esc(plan.description)}</textarea></section>`;
     renderGuideStatus();
-    if(publicView)document.querySelectorAll('#tier-guide-editor [data-guide-field],#copy-previous-equipment').forEach(control=>{control.disabled=true;});
+    if(publicView)document.querySelectorAll('#tier-guide-editor [data-guide-field]').forEach(control=>{control.disabled=true;});
   }
   function selectGuide(tier) {
     if (!D.guide.tiers.includes(tier)) return;
     guideTier = tier; renderGuide(); $(`#guide-tab-${tier}`).focus();
   }
-  function editGuide(target) {
-    if(publicView)return;
-    const field = target.dataset.guideField, slot = target.dataset.guideSlot, plan = build.tierPlans[guideTier];
-    const slotField = field==='equipment' || field==='enchantments';
-    if (!['description','equipmentNotes','equipment','enchantments'].includes(field) || (slotField && !D.guide.equipmentSlots.some(item=>item.id===slot))) return;
-    const owner = slotField ? plan[field] : plan, key = slotField ? slot : field;
-    const value = target.value.slice(0,D.guide.limits[field]);
-    if (owner[key]===value) return;
-    // One undo step per field editing session; typing never recreates the editor.
-    if (guideEdit!==target) { history.push(clone(build)); if(history.length>60)history.shift(); guideEdit=target; }
-    owner[key] = value;
-    const saved = persist(); $('#undo').disabled = false;
-    $('#build-status').textContent = saved ? '편집 중 · 이 브라우저에 임시 저장됨' : '편집 중 · 브라우저 임시 저장 불가';
-    renderGuideStatus();
-  }
-
-  function renderOverview(){
-    $('#overview-fields').innerHTML=D.guide.overviewFields.map(field=>`<label class="overview-${field.id}" for="overview-${field.id}"><span>${field.name}</span><textarea id="overview-${field.id}" data-overview-field="${field.id}" maxlength="${field.max}" placeholder="${field.placeholder}">${esc(build.overview[field.id])}</textarea></label>`).join('');
-  }
-  function editOverview(target){
-    if(publicView)return;
-    const field=D.guide.overviewFields.find(field=>field.id===target.dataset.overviewField);if(!field)return;
-    const value=target.value.slice(0,field.max);if(build.overview[field.id]===value)return;
+  function commitText(target,owner,key,value) {
+    if(publicView || owner[key]===value)return false;
+    // Keep native typing/focus and group a continuous field edit into one undo step.
     if(guideEdit!==target){history.push(clone(build));if(history.length>60)history.shift();guideEdit=target;}
-    build.overview[field.id]=value;
+    owner[key]=value;
     const saved=persist();$('#undo').disabled=false;
     $('#build-status').textContent=saved?'편집 중 · 이 브라우저에 임시 저장됨':'편집 중 · 브라우저 임시 저장 불가';
+    return true;
+  }
+  function editGuide(target) {
+    if(target.dataset.guideField!=='description')return;
+    if(commitText(target,build.tierPlans[guideTier],'description',target.value.slice(0,D.guide.limits.description)))renderGuideStatus();
+  }
+  function renderOverview() {
+    $('#overview-fields').innerHTML=D.guide.overviewFields.map(field=>`<label class="overview-${field.id}" for="overview-${field.id}"><span>${field.name}</span><textarea id="overview-${field.id}" data-overview-field="${field.id}" maxlength="${field.max}" placeholder="${field.placeholder}">${esc(build.overview[field.id])}</textarea></label>`).join('');
+  }
+  function editOverview(target) {
+    const field=D.guide.overviewFields.find(field=>field.id===target.dataset.overviewField);if(!field)return;
+    commitText(target,build.overview,field.id,target.value.slice(0,field.max));
+  }
+  function renderEquipmentStatus() {
+    const count=D.guide.equipmentSlots.filter(slot=>build.equipmentPlan.equipment[slot.id].trim()).length;
+    $('#final-equipment-count').textContent=`${count} / ${D.guide.equipmentSlots.length}개 부위 작성`;
+  }
+  function renderEquipment() {
+    const plan=build.equipmentPlan;
+    const fields=D.guide.equipmentSlots.map(slot=>`<label class="final-slot-${slot.id}" for="final-slot-${slot.id}"><span>${slot.name}</span><input id="final-slot-${slot.id}" data-equipment-field="equipment" data-equipment-slot="${slot.id}" maxlength="${D.guide.limits.equipment}" value="${esc(plan.equipment[slot.id])}" placeholder="장비명" autocomplete="off"></label>`).join('');
+    const archive=Object.entries(build.legacyEquipmentPlans).map(([tier,old])=>`<section><h3>${tier}티어</h3><dl>${D.guide.equipmentSlots.filter(slot=>old.equipment[slot.id].trim()||old.enchantments[slot.id].trim()).map(slot=>`<div><dt>${slot.name}</dt><dd>${esc(old.equipment[slot.id])}${old.enchantments[slot.id].trim()?`<small>인챈트: ${esc(old.enchantments[slot.id])}</small>`:''}</dd></div>`).join('')}</dl>${old.equipmentNotes.trim()?`<p>${esc(old.equipmentNotes)}</p>`:''}</section>`).join('');
+    $('#equipment-plan-editor').innerHTML=`<div class="final-equipment-layout"><section class="final-equipment-names" aria-label="최종 장비 이름"><div class="final-equipment-fields">${fields}</div></section><section class="final-equipment-notes"><label for="recommended-enchantments">추천 인챈트 옵션</label><textarea id="recommended-enchantments" data-equipment-field="recommendedEnchantments" maxlength="${D.guide.limits.recommendedEnchantments}" placeholder="추천하는 인챈트 옵션과 우선순위를 적어주세요. 필요한 경우 장비 부위별로 구분해 적어도 좋습니다.">${esc(plan.recommendedEnchantments)}</textarea><label for="final-equipment-notes">장비 설명 ( 선택이유 / 교체순서 / 대체장비 등)</label><textarea id="final-equipment-notes" data-equipment-field="equipmentNotes" maxlength="${D.guide.limits.equipmentNotes}" placeholder="장비 선택 이유, 교체 순서, 대체 장비 등을 자유롭게 적어주세요.">${esc(plan.equipmentNotes)}</textarea><p class="guide-field-hint">장비 계획은 능력치·스킬 효과 계산에 반영되지 않습니다.</p></section></div>${archive?`<details class="legacy-equipment"><summary>이전 티어별 장비 기록</summary><p>이전에 작성한 장비·인챈트·장비 설명을 보관한 기록입니다.</p><div class="legacy-equipment-records">${archive}</div></details>`:''}`;
+    renderEquipmentStatus();
+  }
+  function editEquipment(target) {
+    const field=target.dataset.equipmentField,slot=target.dataset.equipmentSlot;
+    if(field==='equipment'){
+      if(!D.guide.equipmentSlots.some(item=>item.id===slot))return;
+      if(commitText(target,build.equipmentPlan.equipment,slot,target.value.slice(0,D.guide.limits.equipment)))renderEquipmentStatus();
+    }else if(['recommendedEnchantments','equipmentNotes'].includes(field))commitText(target,build.equipmentPlan,field,target.value.slice(0,D.guide.limits[field]));
   }
 
   function render() {
@@ -246,13 +250,13 @@
     $('#level-steps').innerHTML = Array.from({length:30},(_,index) => index+1).map(level => `<button class="level-step ${level === build.level ? 'active' : ''} ${build.events.some(event => event.level === level) ? 'has-events' : ''}" data-level="${level}" aria-label="레벨 ${level}" aria-pressed="${level === build.level}">${level}</button>`).join('');
     const bonuses = [view.statBonus ? `특성 +${view.statBonus} SP` : '',view.eventBonus ? `이벤트 +${view.eventBonus} SP` : '',view.bonus ? `특성 +${view.bonus} AP` : ''].filter(Boolean);
     $('#timeline-caption').textContent = bonuses.length ? `${bonuses.join(' · ')} 포함 · 이후 계획 유지` : '이전 레벨을 보아도 이후 계획은 유지됩니다';
-    renderGuide();renderOverview();
+    renderGuide();renderOverview();renderEquipment();
     if (!$('#search-area').hidden) renderSearch();
     const reading=Boolean(publicView);
     for(const key of ['reset','save'])$(`#${key}`).disabled=reading;
     $('#undo').disabled=reading||!history.length;$('#build-name').readOnly=reading;
     if(reading){
-      document.querySelectorAll('[data-character],[data-stat-add],[data-stat-remove],[data-book],[data-guide-field],[data-overview-field],[data-souvenir],[data-reward-toggle],[data-reward-choice],#trait-max-toggle,#copy-previous-equipment,#learn-action').forEach(control=>{control.disabled=true;});
+      document.querySelectorAll('[data-character],[data-stat-add],[data-stat-remove],[data-book],[data-guide-field],[data-overview-field],[data-equipment-field],[data-souvenir],[data-reward-toggle],[data-reward-choice],#trait-max-toggle,#learn-action').forEach(control=>{control.disabled=true;});
       $('#build-status').textContent='공개 빌드 · 읽기 전용';
     }else if($('#build-status').textContent==='공개 빌드 · 읽기 전용')$('#build-status').textContent='편집 중 · 이 브라우저에 임시 저장됨';
     window.WayfarerCommunity?.editorChanged?.();
@@ -380,11 +384,6 @@
     else if (d.book) toggleBook(d.book);
     else if (d.level) selectLevel(Number(d.level));
     else if (d.guideTier) selectGuide(Number(d.guideTier));
-    else if (button.id === 'copy-previous-equipment') {
-      const previous = build.tierPlans[guideTier-1]; if(!previous)return;
-      update(()=>{build.tierPlans[guideTier].equipment=clone(previous.equipment);build.tierPlans[guideTier].enchantments=clone(previous.enchantments);build.tierPlans[guideTier].equipmentNotes=previous.equipmentNotes;},`${guideTier-1}티어의 장비 계획을 복사했습니다. 운영 설명은 유지됩니다.`);
-      $('#copy-previous-equipment').focus();
-    }
     else if (button.id === 'learn-action') toggleSkill();
     else if (button.id === 'open-souvenirs' && build.characterId === D.souvenirs.characterId) $('#souvenir-dialog').showModal();
     else if (button.hasAttribute('data-close-dialog')) button.closest('dialog').close();
@@ -409,7 +408,7 @@
     else if(event.target.dataset.rewardToggle)toggleReward(event.target.dataset.rewardToggle,event.target.checked);
     else if(event.target.dataset.rewardChoice)changeRewardChoice(event.target.dataset.rewardChoice,event.target.value);
   });
-  document.addEventListener('input',event=>{if(event.target.dataset.guideField)editGuide(event.target);else if(event.target.dataset.overviewField)editOverview(event.target);});
+  document.addEventListener('input',event=>{if(event.target.dataset.guideField)editGuide(event.target);else if(event.target.dataset.overviewField)editOverview(event.target);else if(event.target.dataset.equipmentField)editEquipment(event.target);});
   document.addEventListener('focusout',event=>{if(event.target===guideEdit)guideEdit=null;});
   document.addEventListener('keydown',event=>{
     if(event.target.matches('[role="tab"][data-guide-tier]') && ['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) {

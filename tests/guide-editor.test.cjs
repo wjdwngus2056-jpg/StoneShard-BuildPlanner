@@ -57,6 +57,7 @@ function editor(initial = P.fresh()) {
   };
   return {
     element,click,input,storage,skillClick,bridge:window.WayfarerEditor,
+    equipment:(field,value,slot)=>{const node=element(`#equipment-${field}-${slot??''}`);node.dataset={equipmentField:field,...(slot?{equipmentSlot:slot}:{})};node.value=value;handlers.get('input')({target:node});return node;},
     overview:(field,value)=>{const node=element(`#overview-${field}`);node.dataset={overviewField:field};node.value=value;handlers.get('input')({target:node});return node;},
     doubleSkill:key=>{skillClick(key);const node=skillClick(key);handlers.get('dblclick')({target:node,preventDefault(){}});},
     blur:node=>handlers.get('focusout')({target:node}),
@@ -79,40 +80,26 @@ test('continuous guide typing persists immediately without recreating the editor
   assert.equal(ui.element('#undo').disabled,true);
 });
 
-test('copying prior equipment preserves current tactics, does not share objects and can be undone', () => {
-  const ui=editor();
-  let field=ui.input('equipment','검과 방패','mainHand');ui.blur(field);
-  field=ui.input('enchantments','명중률 / 치명타 확률','mainHand');ui.blur(field);
-  field=ui.input('equipmentNotes','방어구부터 교체');ui.blur(field);
-  ui.click('guide-tab-2',{guideTier:'2'});
-  field=ui.input('description','2티어에서는 좁은 통로를 활용');ui.blur(field);
-  ui.click('copy-previous-equipment');
-  let build=ui.build();
-  assert.equal(build.tierPlans[2].description,'2티어에서는 좁은 통로를 활용');
-  assert.equal(build.tierPlans[2].equipment.mainHand,'검과 방패');
-  assert.equal(build.tierPlans[2].equipmentNotes,'방어구부터 교체');
-  assert.equal(build.tierPlans[2].enchantments.mainHand,'명중률 / 치명타 확률');
-  ui.undo();assert.equal(ui.build().tierPlans[2].equipment.mainHand,'');
-  assert.equal(ui.build().tierPlans[2].enchantments.mainHand,'');
-  ui.click('copy-previous-equipment');
-  field=ui.input('equipment','교체한 검','mainHand');ui.blur(field);
-  field=ui.input('enchantments','기력 회복','mainHand');ui.blur(field);
-  build=ui.build();assert.equal(build.tierPlans[1].equipment.mainHand,'검과 방패');
-  assert.equal(build.tierPlans[2].equipment.mainHand,'교체한 검');
-  assert.equal(build.tierPlans[1].enchantments.mainHand,'명중률 / 치명타 확률');
-  assert.equal(build.tierPlans[2].enchantments.mainHand,'기력 회복');
+test('one equipment plan survives tier switches and continuous edits undo independently of tactics', () => {
+  const ui=editor(),writes=ui.element('#equipment-plan-editor').markupWrites;
+  ui.equipment('equipment','검','mainHand');let field=ui.equipment('equipment','최종 검','mainHand');ui.blur(field);
+  field=ui.equipment('recommendedEnchantments','명중률 / 기력 회복');ui.blur(field);
+  field=ui.equipment('equipmentNotes','방어구부터 교체');ui.blur(field);
+  ui.click('guide-tab-2',{guideTier:'2'});field=ui.input('description','좁은 통로 활용');ui.blur(field);
+  assert.equal(ui.element('#equipment-plan-editor').markupWrites,writes);
+  assert.equal(ui.build().equipmentPlan.equipment.mainHand,'최종 검');assert.equal(ui.build().equipmentPlan.recommendedEnchantments,'명중률 / 기력 회복');
+  assert.deepEqual(ui.build().tierPlans[2],{description:'좁은 통로 활용'});
+  assert.ok(!ui.element('#tier-guide-editor').innerHTML.includes('data-equipment-field'));
+  ui.undo();assert.equal(ui.build().tierPlans[2].description,'');assert.equal(ui.build().equipmentPlan.equipmentNotes,'방어구부터 교체');
+  ui.undo();assert.equal(ui.build().equipmentPlan.equipmentNotes,'');ui.undo();assert.equal(ui.build().equipmentPlan.recommendedEnchantments,'');
+  ui.undo();assert.equal(ui.build().equipmentPlan.equipment.mainHand,'');assert.equal(ui.element('#final-equipment-count').textContent,'0 / 11개 부위 작성');
 });
-
-test('enchantment-only plans persist independently and count as written equipment', () => {
-  const ui=editor();
-  const field=ui.input('enchantments','명중률 < 치명타 & 기력','head');ui.blur(field);
-  assert.equal(ui.build().tierPlans[1].equipment.head,'');
-  assert.equal(ui.build().tierPlans[1].enchantments.head,'명중률 < 치명타 & 기력');
-  assert.equal(ui.element('#guide-equipment-count').textContent,'1개 부위 작성');
-  ui.save();
-  const restored=editor(JSON.parse(ui.storage.get(storageKey))[0].build);
-  assert.equal(restored.build().tierPlans[1].enchantments.head,'명중률 < 치명타 & 기력');
-  assert.ok(restored.element('#tier-guide-editor').innerHTML.includes('명중률 &lt; 치명타 &amp; 기력'));
+test('shared enchantment recommendations save independently from gear names and render as safe text', () => {
+  const ui=editor();const field=ui.equipment('recommendedEnchantments','명중률 < 치명타 & 기력\n부위별 우선순위');ui.blur(field);
+  assert.equal(ui.build().equipmentPlan.equipment.head,'');assert.equal(ui.element('#final-equipment-count').textContent,'0 / 11개 부위 작성');
+  ui.save();const restored=editor(JSON.parse(ui.storage.get(storageKey))[0].build);
+  assert.equal(restored.build().equipmentPlan.recommendedEnchantments,'명중률 < 치명타 & 기력\n부위별 우선순위');
+  assert.ok(restored.element('#equipment-plan-editor').innerHTML.includes('명중률 &lt; 치명타 &amp; 기력'));
 });
 
 test('Hilda chooser enforces three selections, unlocks after removal, and saves both value ranges', () => {
@@ -151,10 +138,10 @@ test('saved guides restore safely, including markup-like notes and quoted equipm
   const ui=editor();
   const description='</textarea><img src=x onerror="alert(1)">\n한글 메모';
   let field=ui.input('description',description);ui.blur(field);
-  field=ui.input('equipment','" autofocus onfocus="alert(1)','head');ui.blur(field);
+  field=ui.equipment('equipment','" autofocus onfocus="alert(1)','head');ui.blur(field);
   ui.save();
   const saved=JSON.parse(ui.storage.get(storageKey))[0];
-  const restored=editor(saved.build), html=restored.element('#tier-guide-editor').innerHTML;
+  const restored=editor(saved.build), html=restored.element('#tier-guide-editor').innerHTML+restored.element('#equipment-plan-editor').innerHTML;
   assert.equal(restored.build().tierPlans[1].description,description);
   assert.ok(html.includes('&lt;/textarea&gt;&lt;img'));
   assert.ok(html.includes('&quot; autofocus onfocus=&quot;alert(1)'));
@@ -310,7 +297,8 @@ test('public viewing and level navigation never overwrite the private draft or l
   const publicPlan=P.demo();publicPlan.name='다른 사람의 빌드';publicPlan.overview.features='공개 설명';
   ui.bridge.openPublic({build:publicPlan,level:10,trees:['sword'],author_name:'작성자'});
   ui.click('view-level-2',{level:'2'});ui.doubleSkill('sword-cleaving-strike');
-  ui.input('description','변경 시도');ui.overview('features','변경 시도');ui.save();
+  ui.input('description','변경 시도');ui.overview('features','변경 시도');ui.equipment('equipment','변경 시도','mainHand');ui.equipment('recommendedEnchantments','변경 시도');ui.save();
+  assert.equal(ui.bridge.getBuild().equipmentPlan.equipment.mainHand,'');assert.equal(ui.bridge.getBuild().equipmentPlan.recommendedEnchantments,'');
   assert.equal(ui.bridge.getBuild().overview.features,'공개 설명');
   assert.equal(ui.storage.get(`${storageKey}-draft`),before);
   assert.equal(ui.storage.get(storageKey),undefined);
@@ -324,14 +312,14 @@ test('public viewing and level navigation never overwrite the private draft or l
 });
 
 test('explicitly copying a public build creates an editable draft and undo recovers private work', () => {
-  const initial=P.fresh('dirwin');initial.tierPlans[5].equipment.mainHand='내 장비';
+  const initial=P.fresh('dirwin');initial.equipmentPlan.equipment.mainHand='내 장비';
   const ui=editor(initial),published=P.demo();
   ui.bridge.openPublic({build:published,level:10,trees:['sword']});ui.bridge.copyPublic();
   assert.equal(ui.bridge.getPublic(),null);assert.equal(ui.build().name,published.name);
-  ui.input('enchantments','명중률','mainHand');
-  assert.equal(ui.build().tierPlans[1].enchantments.mainHand,'명중률');
-  assert.equal(published.tierPlans[1].enchantments.mainHand,'');
-  ui.undo();ui.undo();assert.equal(ui.build().characterId,'dirwin');assert.equal(ui.build().tierPlans[5].equipment.mainHand,'내 장비');
+  ui.equipment('recommendedEnchantments','명중률');
+  assert.equal(ui.build().equipmentPlan.recommendedEnchantments,'명중률');
+  assert.equal(published.equipmentPlan.recommendedEnchantments,'');
+  ui.undo();ui.undo();assert.equal(ui.build().characterId,'dirwin');assert.equal(ui.build().equipmentPlan.equipment.mainHand,'내 장비');
 });
 
 
@@ -352,4 +340,18 @@ test('overview editing preserves typing, saves escaped multiline text and undoes
   ui.undo();assert.equal(ui.build().overview.cons,'');
   ui.undo();assert.equal(ui.build().overview.pros,'');
   ui.undo();assert.equal(ui.build().overview.features,'');
+});
+
+
+test('legacy equipment remains accessible in a collapsed escaped archive after migration and save', () => {
+  const old=P.fresh();delete old.equipmentPlan;
+  old.tierPlans[1].equipment={mainHand:'<초반 검>'};old.tierPlans[1].enchantments={mainHand:'치명타 & 명중'};old.tierPlans[1].equipmentNotes='초반 메모';
+  old.tierPlans[5].equipment={mainHand:'최종 창'};
+  const ui=editor(old),html=ui.element('#equipment-plan-editor').innerHTML;
+  assert.ok(html.includes('value="최종 창"'));assert.ok(html.includes('&lt;초반 검&gt;'));assert.ok(html.includes('치명타 &amp; 명중'));
+  assert.ok(!/<details class="legacy-equipment"[^>]*\sopen/.test(html));
+  const field=ui.equipment('equipment','','mainHand');ui.blur(field);ui.save();
+  const restored=editor(JSON.parse(ui.storage.get(storageKey))[0].build);
+  assert.equal(restored.bridge.getBuild().equipmentPlan.equipment.mainHand,'');
+  assert.equal(restored.bridge.getBuild().legacyEquipmentPlans[1].equipment.mainHand,'<초반 검>');
 });
