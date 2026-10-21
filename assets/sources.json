@@ -1,0 +1,1290 @@
+{
+  "origin": "Official Stoneshard Wiki; game artwork belongs to Ink Stains Games.",
+  "assets": [
+    {
+      "file": "assets/trees/sword.png",
+      "source": "https://stoneshard.com/wiki/images/4/4c/Swords_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Swords_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/sword-cleaving-strike.png",
+      "source": "https://stoneshard.com/wiki/images/b/bb/Cleaving_Strike.png",
+      "page": "https://stoneshard.com/wiki/Cleaving_Strike"
+    },
+    {
+      "file": "assets/skills/sword-blade-maintenance.png",
+      "source": "https://stoneshard.com/wiki/images/9/96/Blade_Maintenance.png",
+      "page": "https://stoneshard.com/wiki/Blade_Maintenance"
+    },
+    {
+      "file": "assets/skills/sword-keeping-distance.png",
+      "source": "https://stoneshard.com/wiki/images/3/3b/Keeping_Distance.png",
+      "page": "https://stoneshard.com/wiki/Keeping_Distance"
+    },
+    {
+      "file": "assets/skills/sword-gloat.png",
+      "source": "https://stoneshard.com/wiki/images/e/ef/Gloat.png",
+      "page": "https://stoneshard.com/wiki/Gloat"
+    },
+    {
+      "file": "assets/skills/sword-fencer-stance.png",
+      "source": "https://stoneshard.com/wiki/images/f/f3/Fencer_Stance.png",
+      "page": "https://stoneshard.com/wiki/Fencer_Stance"
+    },
+    {
+      "file": "assets/skills/sword-steady-tempo.png",
+      "source": "https://stoneshard.com/wiki/images/a/ae/Steady_Tempo.png",
+      "page": "https://stoneshard.com/wiki/Steady_Tempo"
+    },
+    {
+      "file": "assets/skills/sword-honed-edge.png",
+      "source": "https://stoneshard.com/wiki/images/2/2c/Honed_Edge.png",
+      "page": "https://stoneshard.com/wiki/Honed_Edge"
+    },
+    {
+      "file": "assets/skills/sword-onrush.png",
+      "source": "https://stoneshard.com/wiki/images/1/11/Onrush.png",
+      "page": "https://stoneshard.com/wiki/Onrush"
+    },
+    {
+      "file": "assets/trees/axe.png",
+      "source": "https://stoneshard.com/wiki/images/b/b6/Axes_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Axes_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/axe-mutilating-lunge.png",
+      "source": "https://stoneshard.com/wiki/images/d/df/Mutilating_Lunge.png",
+      "page": "https://stoneshard.com/wiki/Mutilating_Lunge"
+    },
+    {
+      "file": "assets/skills/axe-ferocity.png",
+      "source": "https://stoneshard.com/wiki/images/f/f1/Ferocity.png",
+      "page": "https://stoneshard.com/wiki/Ferocity"
+    },
+    {
+      "file": "assets/skills/axe-cut-through.png",
+      "source": "https://stoneshard.com/wiki/images/f/fc/Cut_Through.png",
+      "page": "https://stoneshard.com/wiki/Cut_Through"
+    },
+    {
+      "file": "assets/skills/axe-no-mercy.png",
+      "source": "https://stoneshard.com/wiki/images/8/84/No_Mercy.png",
+      "page": "https://stoneshard.com/wiki/No_Mercy"
+    },
+    {
+      "file": "assets/skills/axe-reprisal.png",
+      "source": "https://stoneshard.com/wiki/images/4/47/Reprisal.png",
+      "page": "https://stoneshard.com/wiki/Reprisal"
+    },
+    {
+      "file": "assets/skills/axe-massacre.png",
+      "source": "https://stoneshard.com/wiki/images/6/64/Massacre.png",
+      "page": "https://stoneshard.com/wiki/Massacre"
+    },
+    {
+      "file": "assets/skills/axe-execution.png",
+      "source": "https://stoneshard.com/wiki/images/6/67/Execution.png",
+      "page": "https://stoneshard.com/wiki/Execution"
+    },
+    {
+      "file": "assets/skills/axe-tormenting-swings.png",
+      "source": "https://stoneshard.com/wiki/images/3/3b/Tormenting_Swings.png",
+      "page": "https://stoneshard.com/wiki/Tormenting_Swings"
+    },
+    {
+      "file": "assets/trees/mace.png",
+      "source": "https://stoneshard.com/wiki/images/c/c2/Maces_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Maces_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/mace-onslaught.png",
+      "source": "https://stoneshard.com/wiki/images/c/c5/Onslaught.png",
+      "page": "https://stoneshard.com/wiki/Onslaught"
+    },
+    {
+      "file": "assets/skills/mace-dazing-strikes.png",
+      "source": "https://stoneshard.com/wiki/images/8/8f/Dazing_Strikes.png",
+      "page": "https://stoneshard.com/wiki/Dazing_Strikes"
+    },
+    {
+      "file": "assets/skills/mace-armor-break.png",
+      "source": "https://stoneshard.com/wiki/images/6/6f/Armor_Break.png",
+      "page": "https://stoneshard.com/wiki/Armor_Break"
+    },
+    {
+      "file": "assets/skills/mace-moment-of-weakness.png",
+      "source": "https://stoneshard.com/wiki/images/2/26/Moment_of_Weakness.png",
+      "page": "https://stoneshard.com/wiki/Moment_of_Weakness"
+    },
+    {
+      "file": "assets/skills/mace-respite.png",
+      "source": "https://stoneshard.com/wiki/images/1/1a/Respite.png",
+      "page": "https://stoneshard.com/wiki/Respite"
+    },
+    {
+      "file": "assets/skills/mace-hammer-and-anvil.png",
+      "source": "https://stoneshard.com/wiki/images/6/6e/Hammer_and_Anvil.png",
+      "page": "https://stoneshard.com/wiki/Hammer_and_Anvil"
+    },
+    {
+      "file": "assets/skills/mace-knock-out.png",
+      "source": "https://stoneshard.com/wiki/images/c/cb/Knock_Out.png",
+      "page": "https://stoneshard.com/wiki/Knock_Out"
+    },
+    {
+      "file": "assets/skills/mace-concussion.png",
+      "source": "https://stoneshard.com/wiki/images/1/10/Concussion.png",
+      "page": "https://stoneshard.com/wiki/Concussion"
+    },
+    {
+      "file": "assets/trees/dagger.png",
+      "source": "https://stoneshard.com/wiki/images/d/dd/Daggers_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Daggers_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/dagger-quick-hands.png",
+      "source": "https://stoneshard.com/wiki/images/7/79/Quick_Hands.png",
+      "page": "https://stoneshard.com/wiki/Quick_Hands"
+    },
+    {
+      "file": "assets/skills/dagger-double-lunge.png",
+      "source": "https://stoneshard.com/wiki/images/0/03/Double_Lunge.png",
+      "page": "https://stoneshard.com/wiki/Double_Lunge"
+    },
+    {
+      "file": "assets/skills/dagger-gaping-wound.png",
+      "source": "https://stoneshard.com/wiki/images/6/6e/Gaping_Wound.png",
+      "page": "https://stoneshard.com/wiki/Gaping_Wound"
+    },
+    {
+      "file": "assets/skills/dagger-from-the-shadows.png",
+      "source": "https://stoneshard.com/wiki/images/0/0e/From_the_Shadows.png",
+      "page": "https://stoneshard.com/wiki/From_the_Shadows"
+    },
+    {
+      "file": "assets/skills/dagger-deadly-trick.png",
+      "source": "https://stoneshard.com/wiki/images/d/d1/Deadly_Trick.png",
+      "page": "https://stoneshard.com/wiki/Deadly_Trick"
+    },
+    {
+      "file": "assets/skills/dagger-weakening-jabs.png",
+      "source": "https://stoneshard.com/wiki/images/c/c3/Weakening_Jabs.png",
+      "page": "https://stoneshard.com/wiki/Weakening_Jabs"
+    },
+    {
+      "file": "assets/skills/dagger-painful-stabs.png",
+      "source": "https://stoneshard.com/wiki/images/1/16/Painful_Stabs.png",
+      "page": "https://stoneshard.com/wiki/Painful_Stabs"
+    },
+    {
+      "file": "assets/skills/dagger-counterattack-mastery.png",
+      "source": "https://stoneshard.com/wiki/images/3/3a/Counterattack_Mastery.png",
+      "page": "https://stoneshard.com/wiki/Counterattack_Mastery"
+    },
+    {
+      "file": "assets/skills/dagger-danse-macabre.png",
+      "source": "https://stoneshard.com/wiki/images/5/50/Danse_Macabre.png",
+      "page": "https://stoneshard.com/wiki/Danse_Macabre"
+    },
+    {
+      "file": "assets/skills/dagger-coup-de-grace.png",
+      "source": "https://stoneshard.com/wiki/images/b/bd/Coup_de_Grace.png",
+      "page": "https://stoneshard.com/wiki/Coup_de_Grace"
+    },
+    {
+      "file": "assets/trees/two-handed-sword.png",
+      "source": "https://stoneshard.com/wiki/images/a/ab/Greatswords_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Two-Handed_Swords_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/two-handed-sword-hewing-strike.png",
+      "source": "https://stoneshard.com/wiki/images/a/a8/Hewing_Strike.png",
+      "page": "https://stoneshard.com/wiki/Hewing_Strike"
+    },
+    {
+      "file": "assets/skills/two-handed-sword-revanche.png",
+      "source": "https://stoneshard.com/wiki/images/9/9d/Revanche.png",
+      "page": "https://stoneshard.com/wiki/Revanche"
+    },
+    {
+      "file": "assets/skills/two-handed-sword-parry.png",
+      "source": "https://stoneshard.com/wiki/images/4/44/Parry.png",
+      "page": "https://stoneshard.com/wiki/Parry"
+    },
+    {
+      "file": "assets/skills/two-handed-sword-recklessness.png",
+      "source": "https://stoneshard.com/wiki/images/9/92/Recklessness.png",
+      "page": "https://stoneshard.com/wiki/Recklessness"
+    },
+    {
+      "file": "assets/skills/two-handed-sword-feast-of-steel.png",
+      "source": "https://stoneshard.com/wiki/images/2/20/Feast_of_Steel.png",
+      "page": "https://stoneshard.com/wiki/Feast_of_Steel"
+    },
+    {
+      "file": "assets/skills/two-handed-sword-arc-cleave.png",
+      "source": "https://stoneshard.com/wiki/images/5/51/Arc_Cleave.png",
+      "page": "https://stoneshard.com/wiki/Arc_Cleave"
+    },
+    {
+      "file": "assets/skills/two-handed-sword-fight-to-the-death.png",
+      "source": "https://stoneshard.com/wiki/images/8/84/Fight_to_the_Death.png",
+      "page": "https://stoneshard.com/wiki/Fight_to_the_Death"
+    },
+    {
+      "file": "assets/skills/two-handed-sword-taste-of-victory.png",
+      "source": "https://stoneshard.com/wiki/images/c/cf/Taste_of_Victory.png",
+      "page": "https://stoneshard.com/wiki/Taste_of_Victory"
+    },
+    {
+      "file": "assets/skills/two-handed-sword-heroic-charge.png",
+      "source": "https://stoneshard.com/wiki/images/7/79/Heroic_Charge.png",
+      "page": "https://stoneshard.com/wiki/Heroic_Charge"
+    },
+    {
+      "file": "assets/skills/two-handed-sword-courage.png",
+      "source": "https://stoneshard.com/wiki/images/2/25/Courage.png",
+      "page": "https://stoneshard.com/wiki/Courage"
+    },
+    {
+      "file": "assets/trees/two-handed-axe.png",
+      "source": "https://stoneshard.com/wiki/images/c/ca/Greataxes_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Two-Handed_Axes_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/two-handed-axe-hooking-chop.png",
+      "source": "https://stoneshard.com/wiki/images/5/59/Hooking_Chop.png",
+      "page": "https://stoneshard.com/wiki/Hooking_Chop"
+    },
+    {
+      "file": "assets/skills/two-handed-axe-shieldbreaker.png",
+      "source": "https://stoneshard.com/wiki/images/d/d8/Shieldbreaker.png",
+      "page": "https://stoneshard.com/wiki/Shieldbreaker"
+    },
+    {
+      "file": "assets/skills/two-handed-axe-dismember.png",
+      "source": "https://stoneshard.com/wiki/images/8/80/Dismember.png",
+      "page": "https://stoneshard.com/wiki/Dismember"
+    },
+    {
+      "file": "assets/skills/two-handed-axe-rampage.png",
+      "source": "https://stoneshard.com/wiki/images/e/e4/Rampage.png",
+      "page": "https://stoneshard.com/wiki/Rampage"
+    },
+    {
+      "file": "assets/skills/two-handed-axe-fatal-strike.png",
+      "source": "https://stoneshard.com/wiki/images/f/f2/Fatal_Strike.png",
+      "page": "https://stoneshard.com/wiki/Fatal_Strike"
+    },
+    {
+      "file": "assets/skills/two-handed-axe-finish-em.png",
+      "source": "https://stoneshard.com/wiki/images/0/00/Finish_%60Em%21.png",
+      "page": "https://stoneshard.com/wiki/Finish_%60Em!"
+    },
+    {
+      "file": "assets/skills/two-handed-axe-reign-in-blood.png",
+      "source": "https://stoneshard.com/wiki/images/4/47/Reign_in_Blood.png",
+      "page": "https://stoneshard.com/wiki/Reign_in_Blood"
+    },
+    {
+      "file": "assets/skills/two-handed-axe-tool-of-execution.png",
+      "source": "https://stoneshard.com/wiki/images/d/de/Tool_of_Execution.png",
+      "page": "https://stoneshard.com/wiki/Tool_of_Execution"
+    },
+    {
+      "file": "assets/skills/two-handed-axe-make-space.png",
+      "source": "https://stoneshard.com/wiki/images/7/7b/Make_Space.png",
+      "page": "https://stoneshard.com/wiki/Make_Space"
+    },
+    {
+      "file": "assets/skills/two-handed-axe-maim-and-kill.png",
+      "source": "https://stoneshard.com/wiki/images/f/f0/Maim_and_Kill.png",
+      "page": "https://stoneshard.com/wiki/Maim_and_Kill"
+    },
+    {
+      "file": "assets/trees/two-handed-mace.png",
+      "source": "https://stoneshard.com/wiki/images/1/18/Two-handed_maces_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Two-Handed_Maces_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/two-handed-mace-keep-them-coming.png",
+      "source": "https://stoneshard.com/wiki/images/7/71/Keep_Them_Coming.png",
+      "page": "https://stoneshard.com/wiki/Keep_Them_Coming"
+    },
+    {
+      "file": "assets/skills/two-handed-mace-mighty-swing.png",
+      "source": "https://stoneshard.com/wiki/images/7/7f/Mighty_Swing.png",
+      "page": "https://stoneshard.com/wiki/Mighty_Swing"
+    },
+    {
+      "file": "assets/skills/two-handed-mace-unstoppable-force.png",
+      "source": "https://stoneshard.com/wiki/images/5/58/Unstoppable_Force.png",
+      "page": "https://stoneshard.com/wiki/Unstoppable_Force"
+    },
+    {
+      "file": "assets/skills/two-handed-mace-unbalance.png",
+      "source": "https://stoneshard.com/wiki/images/e/e4/Unbalance.png",
+      "page": "https://stoneshard.com/wiki/Unbalance"
+    },
+    {
+      "file": "assets/skills/two-handed-mace-striker-stance.png",
+      "source": "https://stoneshard.com/wiki/images/d/d2/Striker_Stance.png",
+      "page": "https://stoneshard.com/wiki/Striker_Stance"
+    },
+    {
+      "file": "assets/skills/two-handed-mace-bonebreaker-two-handed-mace-skill.png",
+      "source": "https://stoneshard.com/wiki/images/c/c8/Bonebreaker_%28Two-Handed_Mace_skill%29.png",
+      "page": "https://stoneshard.com/wiki/Bonebreaker_(Two-Handed_Mace_skill)"
+    },
+    {
+      "file": "assets/skills/two-handed-mace-forceful-slam.png",
+      "source": "https://stoneshard.com/wiki/images/3/39/Forceful_Slam.png",
+      "page": "https://stoneshard.com/wiki/Forceful_Slam"
+    },
+    {
+      "file": "assets/skills/two-handed-mace-revel-in-battle.png",
+      "source": "https://stoneshard.com/wiki/images/7/79/Revel_in_Battle.png",
+      "page": "https://stoneshard.com/wiki/Revel_in_Battle"
+    },
+    {
+      "file": "assets/skills/two-handed-mace-skull-crusher.png",
+      "source": "https://stoneshard.com/wiki/images/b/be/Skull_Crusher.png",
+      "page": "https://stoneshard.com/wiki/Skull_Crusher"
+    },
+    {
+      "file": "assets/skills/two-handed-mace-severe-concussion.png",
+      "source": "https://stoneshard.com/wiki/images/d/d1/Severe_Concussion.png",
+      "page": "https://stoneshard.com/wiki/Severe_Concussion"
+    },
+    {
+      "file": "assets/trees/spear.png",
+      "source": "https://stoneshard.com/wiki/images/a/a2/Spears_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Spears_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/spear-precise-hits.png",
+      "source": "https://stoneshard.com/wiki/images/3/33/Precise_Hits.png",
+      "page": "https://stoneshard.com/wiki/Precise_Hits"
+    },
+    {
+      "file": "assets/skills/spear-nail-down.png",
+      "source": "https://stoneshard.com/wiki/images/0/08/Nail_Down.png",
+      "page": "https://stoneshard.com/wiki/Nail_Down"
+    },
+    {
+      "file": "assets/skills/spear-impaling-lunge.png",
+      "source": "https://stoneshard.com/wiki/images/7/7c/Impaling_Lunge.png",
+      "page": "https://stoneshard.com/wiki/Impaling_Lunge"
+    },
+    {
+      "file": "assets/skills/spear-no-retreat.png",
+      "source": "https://stoneshard.com/wiki/images/c/c1/No_Retreat.png",
+      "page": "https://stoneshard.com/wiki/No_Retreat"
+    },
+    {
+      "file": "assets/skills/spear-pikeman-stance.png",
+      "source": "https://stoneshard.com/wiki/images/0/02/Pikeman_Stance.png",
+      "page": "https://stoneshard.com/wiki/Pikeman_Stance"
+    },
+    {
+      "file": "assets/skills/spear-wounding-spearhead.png",
+      "source": "https://stoneshard.com/wiki/images/6/6e/Wounding_Spearhead.png",
+      "page": "https://stoneshard.com/wiki/Wounding_Spearhead"
+    },
+    {
+      "file": "assets/skills/spear-determination.png",
+      "source": "https://stoneshard.com/wiki/images/f/ff/Determination.png",
+      "page": "https://stoneshard.com/wiki/Determination"
+    },
+    {
+      "file": "assets/skills/spear-one-at-a-time.png",
+      "source": "https://stoneshard.com/wiki/images/0/06/One_at_a_Time%21.png",
+      "page": "https://stoneshard.com/wiki/One_at_a_Time!"
+    },
+    {
+      "file": "assets/skills/spear-regroup.png",
+      "source": "https://stoneshard.com/wiki/images/6/68/Regroup.png",
+      "page": "https://stoneshard.com/wiki/Regroup"
+    },
+    {
+      "file": "assets/skills/spear-stay-back.png",
+      "source": "https://stoneshard.com/wiki/images/3/35/Stay_Back%21.png",
+      "page": "https://stoneshard.com/wiki/Stay_Back!"
+    },
+    {
+      "file": "assets/trees/ranged.png",
+      "source": "https://stoneshard.com/wiki/images/4/41/Ranged_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Ranged_Weapons_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/ranged-taking-aim.png",
+      "source": "https://stoneshard.com/wiki/images/9/9b/Taking_Aim.png",
+      "page": "https://stoneshard.com/wiki/Taking_Aim"
+    },
+    {
+      "file": "assets/skills/ranged-constant-practice.png",
+      "source": "https://stoneshard.com/wiki/images/b/b0/Constant_Practice.png",
+      "page": "https://stoneshard.com/wiki/Constant_Practice"
+    },
+    {
+      "file": "assets/skills/ranged-dexterity.png",
+      "source": "https://stoneshard.com/wiki/images/0/0d/Dexterity.png",
+      "page": "https://stoneshard.com/wiki/Dexterity"
+    },
+    {
+      "file": "assets/skills/ranged-distracting-shot.png",
+      "source": "https://stoneshard.com/wiki/images/0/01/Distracting_Shot.png",
+      "page": "https://stoneshard.com/wiki/Distracting_Shot"
+    },
+    {
+      "file": "assets/skills/ranged-spot-weakness.png",
+      "source": "https://stoneshard.com/wiki/images/f/f9/Spot_Weakness.png",
+      "page": "https://stoneshard.com/wiki/Spot_Weakness"
+    },
+    {
+      "file": "assets/skills/ranged-startling-volley.png",
+      "source": "https://stoneshard.com/wiki/images/c/c8/Startling_Volley.png",
+      "page": "https://stoneshard.com/wiki/Startling_Volley"
+    },
+    {
+      "file": "assets/skills/ranged-suppression.png",
+      "source": "https://stoneshard.com/wiki/images/8/8f/Suppression.png",
+      "page": "https://stoneshard.com/wiki/Suppression"
+    },
+    {
+      "file": "assets/skills/ranged-anticipation.png",
+      "source": "https://stoneshard.com/wiki/images/e/ef/Anticipation.png",
+      "page": "https://stoneshard.com/wiki/Anticipation"
+    },
+    {
+      "file": "assets/skills/ranged-long-shot.png",
+      "source": "https://stoneshard.com/wiki/images/9/9b/Long_Shot.png",
+      "page": "https://stoneshard.com/wiki/Long_Shot"
+    },
+    {
+      "file": "assets/skills/ranged-precision.png",
+      "source": "https://stoneshard.com/wiki/images/e/ee/Precision.png",
+      "page": "https://stoneshard.com/wiki/Precision"
+    },
+    {
+      "file": "assets/skills/ranged-hunter-s-mark.png",
+      "source": "https://stoneshard.com/wiki/images/b/bd/Hunter%27s_Mark.png",
+      "page": "https://stoneshard.com/wiki/Hunter%27s_Mark"
+    },
+    {
+      "file": "assets/skills/ranged-shoot-to-kill.png",
+      "source": "https://stoneshard.com/wiki/images/4/43/Shoot_to_Kill.png",
+      "page": "https://stoneshard.com/wiki/Shoot_to_Kill"
+    },
+    {
+      "file": "assets/skills/ranged-headshot.png",
+      "source": "https://stoneshard.com/wiki/images/9/94/Headshot.png",
+      "page": "https://stoneshard.com/wiki/Headshot"
+    },
+    {
+      "file": "assets/skills/ranged-upper-hand.png",
+      "source": "https://stoneshard.com/wiki/images/f/fb/Upper_Hand.png",
+      "page": "https://stoneshard.com/wiki/Upper_Hand"
+    },
+    {
+      "file": "assets/trees/shield.png",
+      "source": "https://stoneshard.com/wiki/images/d/d4/Shields_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Shields_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/shield-raise-shield.png",
+      "source": "https://stoneshard.com/wiki/images/1/10/Raise_Shield.png",
+      "page": "https://stoneshard.com/wiki/Raise_Shield"
+    },
+    {
+      "file": "assets/skills/shield-embodiment-of-resilience.png",
+      "source": "https://stoneshard.com/wiki/images/4/4c/Embodiment_of_Resilience.png",
+      "page": "https://stoneshard.com/wiki/Embodiment_of_Resilience"
+    },
+    {
+      "file": "assets/skills/shield-breakthrough.png",
+      "source": "https://stoneshard.com/wiki/images/6/67/Breakthrough.png",
+      "page": "https://stoneshard.com/wiki/Breakthrough"
+    },
+    {
+      "file": "assets/skills/shield-moment-of-retribution.png",
+      "source": "https://stoneshard.com/wiki/images/d/d7/Moment_of_Retribution.png",
+      "page": "https://stoneshard.com/wiki/Moment_of_Retribution"
+    },
+    {
+      "file": "assets/skills/shield-last-bastion.png",
+      "source": "https://stoneshard.com/wiki/images/d/d8/Last_Bastion.png",
+      "page": "https://stoneshard.com/wiki/Last_Bastion"
+    },
+    {
+      "file": "assets/skills/shield-shield-bash.png",
+      "source": "https://stoneshard.com/wiki/images/8/86/Shield_Bash.png",
+      "page": "https://stoneshard.com/wiki/Shield_Bash"
+    },
+    {
+      "file": "assets/skills/shield-hold-the-line.png",
+      "source": "https://stoneshard.com/wiki/images/4/46/Hold_the_Line%21.png",
+      "page": "https://stoneshard.com/wiki/Hold_the_Line!"
+    },
+    {
+      "file": "assets/skills/shield-retaliation.png",
+      "source": "https://stoneshard.com/wiki/images/5/53/Retaliation.png",
+      "page": "https://stoneshard.com/wiki/Retaliation"
+    },
+    {
+      "file": "assets/trees/staff.png",
+      "source": "https://stoneshard.com/wiki/images/3/3a/Staves_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Staves_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/staff-destabilizing-hits.png",
+      "source": "https://stoneshard.com/wiki/images/c/c2/Destabilizing_Hits.png",
+      "page": "https://stoneshard.com/wiki/Destabilizing_Hits"
+    },
+    {
+      "file": "assets/skills/staff-hail-of-blows.png",
+      "source": "https://stoneshard.com/wiki/images/1/19/Hail_of_Blows.png",
+      "page": "https://stoneshard.com/wiki/Hail_of_Blows"
+    },
+    {
+      "file": "assets/skills/staff-step-aside.png",
+      "source": "https://stoneshard.com/wiki/images/8/8d/Step_Aside%21.png",
+      "page": "https://stoneshard.com/wiki/Step_Aside!"
+    },
+    {
+      "file": "assets/skills/staff-battle-trance.png",
+      "source": "https://stoneshard.com/wiki/images/e/e1/Battle_Trance.png",
+      "page": "https://stoneshard.com/wiki/Battle_Trance"
+    },
+    {
+      "file": "assets/skills/staff-now-or-never.png",
+      "source": "https://stoneshard.com/wiki/images/e/ed/Now_or_Never.png",
+      "page": "https://stoneshard.com/wiki/Now_or_Never"
+    },
+    {
+      "file": "assets/skills/staff-unwavering-stance.png",
+      "source": "https://stoneshard.com/wiki/images/6/64/Unwavering_Stance.png",
+      "page": "https://stoneshard.com/wiki/Unwavering_Stance"
+    },
+    {
+      "file": "assets/skills/staff-triumph.png",
+      "source": "https://stoneshard.com/wiki/images/5/52/Triumph.png",
+      "page": "https://stoneshard.com/wiki/Triumph"
+    },
+    {
+      "file": "assets/skills/staff-peacemaker.png",
+      "source": "https://stoneshard.com/wiki/images/1/11/Peacemaker.png",
+      "page": "https://stoneshard.com/wiki/Peacemaker"
+    },
+    {
+      "file": "assets/trees/dual-wielding.png",
+      "source": "https://stoneshard.com/wiki/images/4/44/Dual_wielding_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Dual_Wielding_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/dual-wielding-flurry-of-strikes.png",
+      "source": "https://stoneshard.com/wiki/images/6/60/Flurry_of_Strikes.png",
+      "page": "https://stoneshard.com/wiki/Flurry_of_Strikes"
+    },
+    {
+      "file": "assets/skills/dual-wielding-dual-wielding-training.png",
+      "source": "https://stoneshard.com/wiki/images/3/32/Dual_Wielding_Training.png",
+      "page": "https://stoneshard.com/wiki/Dual_Wielding_Training"
+    },
+    {
+      "file": "assets/skills/dual-wielding-deflect.png",
+      "source": "https://stoneshard.com/wiki/images/2/29/Deflect.png",
+      "page": "https://stoneshard.com/wiki/Deflect"
+    },
+    {
+      "file": "assets/skills/dual-wielding-dying-fervor.png",
+      "source": "https://stoneshard.com/wiki/images/2/2f/Dying_Fervor.png",
+      "page": "https://stoneshard.com/wiki/Dying_Fervor"
+    },
+    {
+      "file": "assets/skills/dual-wielding-enough-for-everyone.png",
+      "source": "https://stoneshard.com/wiki/images/c/c8/Enough_for_Everyone.png",
+      "page": "https://stoneshard.com/wiki/Enough_for_Everyone"
+    },
+    {
+      "file": "assets/skills/dual-wielding-concentration.png",
+      "source": "https://stoneshard.com/wiki/images/0/0b/Concentration.png",
+      "page": "https://stoneshard.com/wiki/Concentration"
+    },
+    {
+      "file": "assets/skills/dual-wielding-berserk-tradition.png",
+      "source": "https://stoneshard.com/wiki/images/7/74/Berserk_Tradition.png",
+      "page": "https://stoneshard.com/wiki/Berserk_Tradition"
+    },
+    {
+      "file": "assets/skills/dual-wielding-unstoppable.png",
+      "source": "https://stoneshard.com/wiki/images/e/eb/Unstoppable.png",
+      "page": "https://stoneshard.com/wiki/Unstoppable"
+    },
+    {
+      "file": "assets/skills/dual-wielding-whirlwind.png",
+      "source": "https://stoneshard.com/wiki/images/e/e0/Whirlwind.png",
+      "page": "https://stoneshard.com/wiki/Whirlwind"
+    },
+    {
+      "file": "assets/skills/dual-wielding-more-blood.png",
+      "source": "https://stoneshard.com/wiki/images/a/ae/More_Blood%21.png",
+      "page": "https://stoneshard.com/wiki/More_Blood!"
+    },
+    {
+      "file": "assets/trees/athletics.png",
+      "source": "https://stoneshard.com/wiki/images/f/f6/Athletics_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Athletics_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/athletics-disengage.png",
+      "source": "https://stoneshard.com/wiki/images/b/bc/Disengage.png",
+      "page": "https://stoneshard.com/wiki/Disengage"
+    },
+    {
+      "file": "assets/skills/athletics-leg-sweep.png",
+      "source": "https://stoneshard.com/wiki/images/1/1a/Leg_Sweep.png",
+      "page": "https://stoneshard.com/wiki/Leg_Sweep"
+    },
+    {
+      "file": "assets/skills/athletics-not-this-time.png",
+      "source": "https://stoneshard.com/wiki/images/1/12/Not_This_Time.png",
+      "page": "https://stoneshard.com/wiki/Not_This_Time"
+    },
+    {
+      "file": "assets/skills/athletics-mighty-kick.png",
+      "source": "https://stoneshard.com/wiki/images/1/15/Mighty_Kick.png",
+      "page": "https://stoneshard.com/wiki/Mighty_Kick"
+    },
+    {
+      "file": "assets/skills/athletics-dash.png",
+      "source": "https://stoneshard.com/wiki/images/5/55/Dash.png",
+      "page": "https://stoneshard.com/wiki/Dash"
+    },
+    {
+      "file": "assets/skills/athletics-inner-reserves.png",
+      "source": "https://stoneshard.com/wiki/images/2/21/Inner_Reserves.png",
+      "page": "https://stoneshard.com/wiki/Inner_Reserves"
+    },
+    {
+      "file": "assets/skills/athletics-sudden-lunge.png",
+      "source": "https://stoneshard.com/wiki/images/6/60/Sudden_Lunge.png",
+      "page": "https://stoneshard.com/wiki/Sudden_Lunge"
+    },
+    {
+      "file": "assets/skills/athletics-push-the-falling.png",
+      "source": "https://stoneshard.com/wiki/images/7/7b/Push_the_Falling.png",
+      "page": "https://stoneshard.com/wiki/Push_the_Falling"
+    },
+    {
+      "file": "assets/skills/athletics-elusiveness.png",
+      "source": "https://stoneshard.com/wiki/images/8/81/Elusiveness.png",
+      "page": "https://stoneshard.com/wiki/Elusiveness"
+    },
+    {
+      "file": "assets/skills/athletics-no-time-to-linger.png",
+      "source": "https://stoneshard.com/wiki/images/5/50/No_Time_to_Linger.png",
+      "page": "https://stoneshard.com/wiki/No_Time_to_Linger"
+    },
+    {
+      "file": "assets/skills/athletics-sprint-training.png",
+      "source": "https://stoneshard.com/wiki/images/9/9e/Sprint_Training.png",
+      "page": "https://stoneshard.com/wiki/Sprint_Training"
+    },
+    {
+      "file": "assets/skills/athletics-adrenaline-rush.png",
+      "source": "https://stoneshard.com/wiki/images/a/a3/Adrenaline_Rush.png",
+      "page": "https://stoneshard.com/wiki/Adrenaline_Rush"
+    },
+    {
+      "file": "assets/skills/athletics-peak-performance.png",
+      "source": "https://stoneshard.com/wiki/images/9/98/Peak_Performance.png",
+      "page": "https://stoneshard.com/wiki/Peak_Performance"
+    },
+    {
+      "file": "assets/trees/survival.png",
+      "source": "https://stoneshard.com/wiki/images/9/97/Survival_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Survival_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/survival-butchering.png",
+      "source": "https://stoneshard.com/wiki/images/8/84/Butchering.png",
+      "page": "https://stoneshard.com/wiki/Butchering"
+    },
+    {
+      "file": "assets/skills/survival-make-a-halt.png",
+      "source": "https://stoneshard.com/wiki/images/3/3f/Make_a_Halt.png",
+      "page": "https://stoneshard.com/wiki/Make_a_Halt"
+    },
+    {
+      "file": "assets/skills/survival-cauterize-wounds.png",
+      "source": "https://stoneshard.com/wiki/images/4/46/Cauterize_Wounds.png",
+      "page": "https://stoneshard.com/wiki/Cauterize_Wounds"
+    },
+    {
+      "file": "assets/skills/survival-pathfinder.png",
+      "source": "https://stoneshard.com/wiki/images/8/8f/Pathfinder.png",
+      "page": "https://stoneshard.com/wiki/Pathfinder"
+    },
+    {
+      "file": "assets/skills/survival-resourcefulness.png",
+      "source": "https://stoneshard.com/wiki/images/1/16/Resourcefulness.png",
+      "page": "https://stoneshard.com/wiki/Resourcefulness"
+    },
+    {
+      "file": "assets/skills/survival-austerity.png",
+      "source": "https://stoneshard.com/wiki/images/7/79/Austerity.png",
+      "page": "https://stoneshard.com/wiki/Austerity"
+    },
+    {
+      "file": "assets/skills/survival-first-aid.png",
+      "source": "https://stoneshard.com/wiki/images/1/11/First_Aid.png",
+      "page": "https://stoneshard.com/wiki/First_Aid"
+    },
+    {
+      "file": "assets/skills/survival-huntmaster.png",
+      "source": "https://stoneshard.com/wiki/images/9/9a/Huntmaster.png",
+      "page": "https://stoneshard.com/wiki/Huntmaster"
+    },
+    {
+      "file": "assets/skills/survival-ever-vigilant.png",
+      "source": "https://stoneshard.com/wiki/images/c/cf/Ever_Vigilant.png",
+      "page": "https://stoneshard.com/wiki/Ever_Vigilant"
+    },
+    {
+      "file": "assets/skills/survival-adaptability.png",
+      "source": "https://stoneshard.com/wiki/images/f/f1/Adaptability.png",
+      "page": "https://stoneshard.com/wiki/Adaptability"
+    },
+    {
+      "file": "assets/skills/survival-will-to-survive.png",
+      "source": "https://stoneshard.com/wiki/images/2/2a/Will_to_Survive.png",
+      "page": "https://stoneshard.com/wiki/Will_to_Survive"
+    },
+    {
+      "file": "assets/trees/warfare.png",
+      "source": "https://stoneshard.com/wiki/images/5/5e/Warfare_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Warfare_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/warfare-seize-the-initiative.png",
+      "source": "https://stoneshard.com/wiki/images/a/a0/Seize_the_Initiative.png",
+      "page": "https://stoneshard.com/wiki/Seize_the_Initiative"
+    },
+    {
+      "file": "assets/skills/warfare-opportune-moment.png",
+      "source": "https://stoneshard.com/wiki/images/8/8b/Opportune_Moment.png",
+      "page": "https://stoneshard.com/wiki/Opportune_Moment"
+    },
+    {
+      "file": "assets/skills/warfare-setup.png",
+      "source": "https://stoneshard.com/wiki/images/9/98/Setup.png",
+      "page": "https://stoneshard.com/wiki/Setup"
+    },
+    {
+      "file": "assets/skills/warfare-war-cry.png",
+      "source": "https://stoneshard.com/wiki/images/a/a9/War_Cry.png",
+      "page": "https://stoneshard.com/wiki/War_Cry"
+    },
+    {
+      "file": "assets/skills/warfare-right-on-target.png",
+      "source": "https://stoneshard.com/wiki/images/d/d2/Right_on_Target.png",
+      "page": "https://stoneshard.com/wiki/Right_on_Target"
+    },
+    {
+      "file": "assets/skills/warfare-offensive-tactic.png",
+      "source": "https://stoneshard.com/wiki/images/a/a7/Offensive_Tactic.png",
+      "page": "https://stoneshard.com/wiki/Offensive_Tactic"
+    },
+    {
+      "file": "assets/skills/warfare-defensive-tactic.png",
+      "source": "https://stoneshard.com/wiki/images/5/51/Defensive_Tactic.png",
+      "page": "https://stoneshard.com/wiki/Defensive_Tactic"
+    },
+    {
+      "file": "assets/skills/warfare-intimidation.png",
+      "source": "https://stoneshard.com/wiki/images/f/f2/Intimidation.png",
+      "page": "https://stoneshard.com/wiki/Intimidation"
+    },
+    {
+      "file": "assets/skills/warfare-finisher.png",
+      "source": "https://stoneshard.com/wiki/images/9/9f/Finisher.png",
+      "page": "https://stoneshard.com/wiki/Finisher"
+    },
+    {
+      "file": "assets/skills/warfare-tactical-advantage.png",
+      "source": "https://stoneshard.com/wiki/images/2/2b/Tactical_Advantage.png",
+      "page": "https://stoneshard.com/wiki/Tactical_Advantage"
+    },
+    {
+      "file": "assets/skills/warfare-against-the-odds.png",
+      "source": "https://stoneshard.com/wiki/images/c/cf/Against_the_Odds.png",
+      "page": "https://stoneshard.com/wiki/Against_the_Odds"
+    },
+    {
+      "file": "assets/skills/warfare-armor-crusher.png",
+      "source": "https://stoneshard.com/wiki/images/f/f9/Armor_Crusher.png",
+      "page": "https://stoneshard.com/wiki/Armor_Crusher"
+    },
+    {
+      "file": "assets/skills/warfare-thirst-for-battle.png",
+      "source": "https://stoneshard.com/wiki/images/d/d8/Thirst_for_Battle.png",
+      "page": "https://stoneshard.com/wiki/Thirst_for_Battle"
+    },
+    {
+      "file": "assets/skills/warfare-final-push.png",
+      "source": "https://stoneshard.com/wiki/images/0/02/Final_Push.png",
+      "page": "https://stoneshard.com/wiki/Final_Push"
+    },
+    {
+      "file": "assets/trees/armored-combat.png",
+      "source": "https://stoneshard.com/wiki/images/5/5f/Armored_Combat_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Armored_Combat_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/armored-combat-self-repair.png",
+      "source": "https://stoneshard.com/wiki/images/b/b2/Self-Repair.png",
+      "page": "https://stoneshard.com/wiki/Self-Repair"
+    },
+    {
+      "file": "assets/skills/armored-combat-brace-for-impact.png",
+      "source": "https://stoneshard.com/wiki/images/2/20/Brace_for_Impact%21.png",
+      "page": "https://stoneshard.com/wiki/Brace_for_Impact!"
+    },
+    {
+      "file": "assets/skills/armored-combat-hard-target.png",
+      "source": "https://stoneshard.com/wiki/images/9/92/Hard_Target.png",
+      "page": "https://stoneshard.com/wiki/Hard_Target"
+    },
+    {
+      "file": "assets/skills/armored-combat-flexible-defense.png",
+      "source": "https://stoneshard.com/wiki/images/7/72/Flexible_Defense.png",
+      "page": "https://stoneshard.com/wiki/Flexible_Defense"
+    },
+    {
+      "file": "assets/skills/armored-combat-battle-forged.png",
+      "source": "https://stoneshard.com/wiki/images/5/5f/Battle-Forged.png",
+      "page": "https://stoneshard.com/wiki/Battle-Forged"
+    },
+    {
+      "file": "assets/skills/armored-combat-unyielding-defense.png",
+      "source": "https://stoneshard.com/wiki/images/9/9e/Unyielding_Defense.png",
+      "page": "https://stoneshard.com/wiki/Unyielding_Defense"
+    },
+    {
+      "file": "assets/skills/armored-combat-battering-ram.png",
+      "source": "https://stoneshard.com/wiki/images/d/d9/Battering_Ram.png",
+      "page": "https://stoneshard.com/wiki/Battering_Ram"
+    },
+    {
+      "file": "assets/skills/armored-combat-custom-adjustments.png",
+      "source": "https://stoneshard.com/wiki/images/5/58/Custom_Adjustments.png",
+      "page": "https://stoneshard.com/wiki/Custom_Adjustments"
+    },
+    {
+      "file": "assets/trees/magic-mastery.png",
+      "source": "https://stoneshard.com/wiki/images/b/b7/Magic_Mastery_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Magic_Mastery_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/magic-mastery-seal-of-finesse.png",
+      "source": "https://stoneshard.com/wiki/images/9/9c/Seal_of_Finesse.png",
+      "page": "https://stoneshard.com/wiki/Seal_of_Finesse"
+    },
+    {
+      "file": "assets/skills/magic-mastery-precise-movements.png",
+      "source": "https://stoneshard.com/wiki/images/7/73/Precise_Movements.png",
+      "page": "https://stoneshard.com/wiki/Precise_Movements"
+    },
+    {
+      "file": "assets/skills/magic-mastery-dissipation.png",
+      "source": "https://stoneshard.com/wiki/images/6/62/Dissipation.png",
+      "page": "https://stoneshard.com/wiki/Dissipation"
+    },
+    {
+      "file": "assets/skills/magic-mastery-seal-of-power.png",
+      "source": "https://stoneshard.com/wiki/images/e/e0/Seal_of_Power.png",
+      "page": "https://stoneshard.com/wiki/Seal_of_Power"
+    },
+    {
+      "file": "assets/skills/magic-mastery-seal-of-insight.png",
+      "source": "https://stoneshard.com/wiki/images/e/ec/Seal_of_Insight.png",
+      "page": "https://stoneshard.com/wiki/Seal_of_Insight"
+    },
+    {
+      "file": "assets/skills/magic-mastery-lingering-incantations.png",
+      "source": "https://stoneshard.com/wiki/images/6/6d/Lingering_Incantations.png",
+      "page": "https://stoneshard.com/wiki/Lingering_Incantations"
+    },
+    {
+      "file": "assets/skills/magic-mastery-seal-of-cleansing.png",
+      "source": "https://stoneshard.com/wiki/images/9/90/Seal_of_Cleansing.png",
+      "page": "https://stoneshard.com/wiki/Seal_of_Cleansing"
+    },
+    {
+      "file": "assets/skills/magic-mastery-body-and-spirit.png",
+      "source": "https://stoneshard.com/wiki/images/4/49/Body_and_Spirit.png",
+      "page": "https://stoneshard.com/wiki/Body_and_Spirit"
+    },
+    {
+      "file": "assets/skills/magic-mastery-thaumaturgy.png",
+      "source": "https://stoneshard.com/wiki/images/7/7b/Thaumaturgy.png",
+      "page": "https://stoneshard.com/wiki/Thaumaturgy"
+    },
+    {
+      "file": "assets/skills/magic-mastery-seal-of-reflection.png",
+      "source": "https://stoneshard.com/wiki/images/e/ef/Seal_of_Reflection.png",
+      "page": "https://stoneshard.com/wiki/Seal_of_Reflection"
+    },
+    {
+      "file": "assets/skills/magic-mastery-seal-of-shackles.png",
+      "source": "https://stoneshard.com/wiki/images/b/bc/Seal_of_Shackles.png",
+      "page": "https://stoneshard.com/wiki/Seal_of_Shackles"
+    },
+    {
+      "file": "assets/skills/magic-mastery-forgotten-lore.png",
+      "source": "https://stoneshard.com/wiki/images/1/1f/Forgotten_Lore.png",
+      "page": "https://stoneshard.com/wiki/Forgotten_Lore"
+    },
+    {
+      "file": "assets/trees/pyromancy.png",
+      "source": "https://stoneshard.com/wiki/images/4/42/Pyromancy_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Pyromancy_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/pyromancy-fire-barrage.png",
+      "source": "https://stoneshard.com/wiki/images/e/ec/Fire_Barrage.png",
+      "page": "https://stoneshard.com/wiki/Fire_Barrage"
+    },
+    {
+      "file": "assets/skills/pyromancy-flame-saturation.png",
+      "source": "https://stoneshard.com/wiki/images/0/04/Flame_Saturation.png",
+      "page": "https://stoneshard.com/wiki/Flame_Saturation"
+    },
+    {
+      "file": "assets/skills/pyromancy-baptism-by-fire.png",
+      "source": "https://stoneshard.com/wiki/images/8/8b/Baptism_by_Fire.png",
+      "page": "https://stoneshard.com/wiki/Baptism_by_Fire"
+    },
+    {
+      "file": "assets/skills/pyromancy-ring-of-fire.png",
+      "source": "https://stoneshard.com/wiki/images/f/f8/Ring_of_Fire.png",
+      "page": "https://stoneshard.com/wiki/Ring_of_Fire"
+    },
+    {
+      "file": "assets/skills/pyromancy-feed-the-flames.png",
+      "source": "https://stoneshard.com/wiki/images/a/a6/Feed_the_Flames.png",
+      "page": "https://stoneshard.com/wiki/Feed_the_Flames"
+    },
+    {
+      "file": "assets/skills/pyromancy-flame-wave.png",
+      "source": "https://stoneshard.com/wiki/images/1/1a/Flame_Wave.png",
+      "page": "https://stoneshard.com/wiki/Flame_Wave"
+    },
+    {
+      "file": "assets/skills/pyromancy-magma-rain.png",
+      "source": "https://stoneshard.com/wiki/images/5/5d/Magma_Rain.png",
+      "page": "https://stoneshard.com/wiki/Magma_Rain"
+    },
+    {
+      "file": "assets/skills/pyromancy-scorch.png",
+      "source": "https://stoneshard.com/wiki/images/0/06/Scorch.png",
+      "page": "https://stoneshard.com/wiki/Scorch"
+    },
+    {
+      "file": "assets/skills/pyromancy-incineration.png",
+      "source": "https://stoneshard.com/wiki/images/9/99/Incineration.png",
+      "page": "https://stoneshard.com/wiki/Incineration"
+    },
+    {
+      "file": "assets/skills/pyromancy-from-blaze-to-furnace.png",
+      "source": "https://stoneshard.com/wiki/images/e/eb/From_Blaze_to_Furnace.png",
+      "page": "https://stoneshard.com/wiki/From_Blaze_to_Furnace"
+    },
+    {
+      "file": "assets/skills/pyromancy-melting-ray.png",
+      "source": "https://stoneshard.com/wiki/images/2/29/Melting_Ray.png",
+      "page": "https://stoneshard.com/wiki/Melting_Ray"
+    },
+    {
+      "file": "assets/skills/pyromancy-excess-heat.png",
+      "source": "https://stoneshard.com/wiki/images/a/af/Excess_Heat.png",
+      "page": "https://stoneshard.com/wiki/Excess_Heat"
+    },
+    {
+      "file": "assets/skills/pyromancy-inferno.png",
+      "source": "https://stoneshard.com/wiki/images/b/be/Inferno.png",
+      "page": "https://stoneshard.com/wiki/Inferno"
+    },
+    {
+      "file": "assets/skills/pyromancy-pyromania.png",
+      "source": "https://stoneshard.com/wiki/images/2/28/Pyromania.png",
+      "page": "https://stoneshard.com/wiki/Pyromania"
+    },
+    {
+      "file": "assets/trees/geomancy.png",
+      "source": "https://stoneshard.com/wiki/images/2/2b/Geomancy_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Geomancy_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/geomancy-runic-boulder.png",
+      "source": "https://stoneshard.com/wiki/images/6/6f/Runic_Boulder.png",
+      "page": "https://stoneshard.com/wiki/Runic_Boulder"
+    },
+    {
+      "file": "assets/skills/geomancy-stone-armor.png",
+      "source": "https://stoneshard.com/wiki/images/2/2f/Stone_Armor.png",
+      "page": "https://stoneshard.com/wiki/Stone_Armor"
+    },
+    {
+      "file": "assets/skills/geomancy-rune-of-fortifying.png",
+      "source": "https://stoneshard.com/wiki/images/2/2c/Rune_of_Fortifying.png",
+      "page": "https://stoneshard.com/wiki/Rune_of_Fortifying"
+    },
+    {
+      "file": "assets/skills/geomancy-stone-spikes.png",
+      "source": "https://stoneshard.com/wiki/images/b/bf/Stone_Spikes.png",
+      "page": "https://stoneshard.com/wiki/Stone_Spikes"
+    },
+    {
+      "file": "assets/skills/geomancy-rune-of-enfeeblement.png",
+      "source": "https://stoneshard.com/wiki/images/4/48/Rune_of_Enfeeblement.png",
+      "page": "https://stoneshard.com/wiki/Rune_of_Enfeeblement"
+    },
+    {
+      "file": "assets/skills/geomancy-rune-of-sustention.png",
+      "source": "https://stoneshard.com/wiki/images/3/38/Rune_of_Sustention.png",
+      "page": "https://stoneshard.com/wiki/Rune_of_Sustention"
+    },
+    {
+      "file": "assets/skills/geomancy-earthquake.png",
+      "source": "https://stoneshard.com/wiki/images/2/2a/Earthquake.png",
+      "page": "https://stoneshard.com/wiki/Earthquake"
+    },
+    {
+      "file": "assets/skills/geomancy-rune-of-binding.png",
+      "source": "https://stoneshard.com/wiki/images/d/df/Rune_of_Binding.png",
+      "page": "https://stoneshard.com/wiki/Rune_of_Binding"
+    },
+    {
+      "file": "assets/skills/geomancy-rune-of-unity.png",
+      "source": "https://stoneshard.com/wiki/images/d/d1/Rune_of_Unity.png",
+      "page": "https://stoneshard.com/wiki/Rune_of_Unity"
+    },
+    {
+      "file": "assets/skills/geomancy-petrification.png",
+      "source": "https://stoneshard.com/wiki/images/4/4b/Petrification.png",
+      "page": "https://stoneshard.com/wiki/Petrification"
+    },
+    {
+      "file": "assets/skills/geomancy-rune-of-cycle.png",
+      "source": "https://stoneshard.com/wiki/images/7/78/Rune_of_Cycle.png",
+      "page": "https://stoneshard.com/wiki/Rune_of_Cycle"
+    },
+    {
+      "file": "assets/skills/geomancy-runic-explosion.png",
+      "source": "https://stoneshard.com/wiki/images/e/e7/Runic_Explosion.png",
+      "page": "https://stoneshard.com/wiki/Runic_Explosion"
+    },
+    {
+      "file": "assets/skills/geomancy-boulder-toss.png",
+      "source": "https://stoneshard.com/wiki/images/3/3e/Boulder_Toss.png",
+      "page": "https://stoneshard.com/wiki/Boulder_Toss"
+    },
+    {
+      "file": "assets/skills/geomancy-rune-of-absorption.png",
+      "source": "https://stoneshard.com/wiki/images/0/0a/Rune_of_Absorption.png",
+      "page": "https://stoneshard.com/wiki/Rune_of_Absorption"
+    },
+    {
+      "file": "assets/trees/electromancy.png",
+      "source": "https://stoneshard.com/wiki/images/6/61/Electromancy_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Electromancy_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/electromancy-jolt.png",
+      "source": "https://stoneshard.com/wiki/images/d/d5/Jolt.png",
+      "page": "https://stoneshard.com/wiki/Jolt"
+    },
+    {
+      "file": "assets/skills/electromancy-impulse.png",
+      "source": "https://stoneshard.com/wiki/images/e/ec/Impulse.png",
+      "page": "https://stoneshard.com/wiki/Impulse"
+    },
+    {
+      "file": "assets/skills/electromancy-residual-charge.png",
+      "source": "https://stoneshard.com/wiki/images/2/26/Residual_Charge.png",
+      "page": "https://stoneshard.com/wiki/Residual_Charge"
+    },
+    {
+      "file": "assets/skills/electromancy-short-circuit.png",
+      "source": "https://stoneshard.com/wiki/images/a/a4/Short_Circuit.png",
+      "page": "https://stoneshard.com/wiki/Short_Circuit"
+    },
+    {
+      "file": "assets/skills/electromancy-static-field.png",
+      "source": "https://stoneshard.com/wiki/images/a/a6/Static_Field.png",
+      "page": "https://stoneshard.com/wiki/Static_Field"
+    },
+    {
+      "file": "assets/skills/electromancy-potential-difference.png",
+      "source": "https://stoneshard.com/wiki/images/7/72/Potential_Difference.png",
+      "page": "https://stoneshard.com/wiki/Potential_Difference"
+    },
+    {
+      "file": "assets/skills/electromancy-chain-lightning.png",
+      "source": "https://stoneshard.com/wiki/images/2/29/Chain_Lightning.png",
+      "page": "https://stoneshard.com/wiki/Chain_Lightning"
+    },
+    {
+      "file": "assets/skills/electromancy-unlimited-power.png",
+      "source": "https://stoneshard.com/wiki/images/7/73/Unlimited_Power.png",
+      "page": "https://stoneshard.com/wiki/Unlimited_Power"
+    },
+    {
+      "file": "assets/skills/electromancy-conductivity.png",
+      "source": "https://stoneshard.com/wiki/images/2/26/Conductivity.png",
+      "page": "https://stoneshard.com/wiki/Conductivity"
+    },
+    {
+      "file": "assets/skills/electromancy-ball-lightning.png",
+      "source": "https://stoneshard.com/wiki/images/d/d7/Ball_Lightning.png",
+      "page": "https://stoneshard.com/wiki/Ball_Lightning"
+    },
+    {
+      "file": "assets/skills/electromancy-chain-reaction.png",
+      "source": "https://stoneshard.com/wiki/images/c/c5/Chain_Reaction.png",
+      "page": "https://stoneshard.com/wiki/Chain_Reaction"
+    },
+    {
+      "file": "assets/skills/electromancy-resonance-cascade.png",
+      "source": "https://stoneshard.com/wiki/images/9/98/Resonance_Cascade.png",
+      "page": "https://stoneshard.com/wiki/Resonance_Cascade"
+    },
+    {
+      "file": "assets/skills/electromancy-tempest.png",
+      "source": "https://stoneshard.com/wiki/images/b/bb/Tempest.png",
+      "page": "https://stoneshard.com/wiki/Tempest"
+    },
+    {
+      "file": "assets/skills/electromancy-recharge.png",
+      "source": "https://stoneshard.com/wiki/images/6/61/Recharge.png",
+      "page": "https://stoneshard.com/wiki/Recharge"
+    },
+    {
+      "file": "assets/trees/arcanistics.png",
+      "source": "https://stoneshard.com/wiki/images/c/c3/Arcanistics_skilltree.png",
+      "page": "https://stoneshard.com/wiki/Arcanistics_(skill_tree)"
+    },
+    {
+      "file": "assets/skills/arcanistics-wormhole.png",
+      "source": "https://stoneshard.com/wiki/images/8/84/Wormhole.png",
+      "page": "https://stoneshard.com/wiki/Wormhole"
+    },
+    {
+      "file": "assets/skills/arcanistics-dimensional-shift.png",
+      "source": "https://stoneshard.com/wiki/images/9/90/Dimensional_Shift.png",
+      "page": "https://stoneshard.com/wiki/Dimensional_Shift"
+    },
+    {
+      "file": "assets/skills/arcanistics-arcane-might.png",
+      "source": "https://stoneshard.com/wiki/images/1/1b/Arcane_Might.png",
+      "page": "https://stoneshard.com/wiki/Arcane_Might"
+    },
+    {
+      "file": "assets/skills/arcanistics-time-echo.png",
+      "source": "https://stoneshard.com/wiki/images/0/09/Time_Echo.png",
+      "page": "https://stoneshard.com/wiki/Time_Echo"
+    },
+    {
+      "file": "assets/skills/arcanistics-schism.png",
+      "source": "https://stoneshard.com/wiki/images/5/52/Schism.png",
+      "page": "https://stoneshard.com/wiki/Schism"
+    },
+    {
+      "file": "assets/skills/arcanistics-transcendental-anchoring.png",
+      "source": "https://stoneshard.com/wiki/images/2/27/Transcendental_Anchoring.png",
+      "page": "https://stoneshard.com/wiki/Transcendental_Anchoring"
+    },
+    {
+      "file": "assets/skills/arcanistics-aether-shield.png",
+      "source": "https://stoneshard.com/wiki/images/0/0f/Aether_Shield.png",
+      "page": "https://stoneshard.com/wiki/Aether_Shield"
+    },
+    {
+      "file": "assets/skills/arcanistics-astral-tides.png",
+      "source": "https://stoneshard.com/wiki/images/3/36/Astral_Tides.png",
+      "page": "https://stoneshard.com/wiki/Astral_Tides"
+    },
+    {
+      "file": "assets/skills/arcanistics-mana-crystal.png",
+      "source": "https://stoneshard.com/wiki/images/7/79/Mana_Crystal.png",
+      "page": "https://stoneshard.com/wiki/Mana_Crystal"
+    },
+    {
+      "file": "assets/skills/arcanistics-stasis.png",
+      "source": "https://stoneshard.com/wiki/images/6/65/Stasis.png",
+      "page": "https://stoneshard.com/wiki/Stasis"
+    },
+    {
+      "file": "assets/skills/arcanistics-phantasm.png",
+      "source": "https://stoneshard.com/wiki/images/a/a7/Phantasm.png",
+      "page": "https://stoneshard.com/wiki/Phantasm"
+    },
+    {
+      "file": "assets/skills/arcanistics-entropy-flare.png",
+      "source": "https://stoneshard.com/wiki/images/7/7f/Entropy_Flare.png",
+      "page": "https://stoneshard.com/wiki/Entropy_Flare"
+    },
+    {
+      "file": "assets/skills/arcanistics-aether-harmony.png",
+      "source": "https://stoneshard.com/wiki/images/2/25/Aether_Harmony.png",
+      "page": "https://stoneshard.com/wiki/Aether_Harmony"
+    },
+    {
+      "file": "assets/skills/arcanistics-beyond-the-veil.png",
+      "source": "https://stoneshard.com/wiki/images/c/c1/Beyond_the_Veil.png",
+      "page": "https://stoneshard.com/wiki/Beyond_the_Veil"
+    },
+    {
+      "file": "assets/characters/arna.png",
+      "source": "https://stoneshard.com/wiki/images/4/4e/Arna.png",
+      "page": "https://stoneshard.com/wiki/Arna"
+    },
+    {
+      "file": "assets/characters/jorgrim.png",
+      "source": "https://stoneshard.com/wiki/images/4/4c/Jorgrim.png",
+      "page": "https://stoneshard.com/wiki/Jorgrim"
+    },
+    {
+      "file": "assets/characters/dirwin.png",
+      "source": "https://stoneshard.com/wiki/images/a/aa/Dirwin.png",
+      "page": "https://stoneshard.com/wiki/Dirwin"
+    },
+    {
+      "file": "assets/characters/jonna.png",
+      "source": "https://stoneshard.com/wiki/images/c/c6/Jonna.png",
+      "page": "https://stoneshard.com/wiki/Jonna"
+    },
+    {
+      "file": "assets/characters/velmir.png",
+      "source": "https://stoneshard.com/wiki/images/b/bf/Velmir.png",
+      "page": "https://stoneshard.com/wiki/Velmir"
+    },
+    {
+      "file": "assets/characters/mahir.png",
+      "source": "https://stoneshard.com/wiki/images/7/72/Mahir.png",
+      "page": "https://stoneshard.com/wiki/Mahir"
+    },
+    {
+      "file": "assets/characters/leosthenes.png",
+      "source": "https://stoneshard.com/wiki/images/3/31/Leosthenes.png",
+      "page": "https://stoneshard.com/wiki/Leosthenes"
+    },
+    {
+      "file": "assets/characters/hilda.png",
+      "source": "https://stoneshard.com/wiki/images/5/58/Hilda.png",
+      "page": "https://stoneshard.com/wiki/Hilda"
+    }
+  ]
+}

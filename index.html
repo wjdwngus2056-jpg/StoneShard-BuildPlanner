@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1b1925">
+  <meta name="description" content="실제 스톤샤드 초상화와 스킬트리로 설계하는 1~30레벨 캐릭터 빌드 플래너.">
+  <title>Stoneshard · 캐릭터 빌드 플래너</title>
+  <link rel="icon" href="assets/skills/survival-make-a-halt.png">
+  <link rel="stylesheet" href="styles.css?v=14">
+  <script src="game-data.js?v=6" defer></script>
+  <script src="data.js?v=12" defer></script>
+  <script src="planner.js?v=12" defer></script>
+  <script src="effects.js?v=6" defer></script>
+  <script src="app.js?v=15" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand"><span class="brand-emblem" aria-hidden="true">◆</span><div><strong>STONESHARD</strong><span>캐릭터 빌드 플래너</span></div></div>
+    <nav aria-label="주 메뉴"><span class="nav-current">빌드 설계</span><button id="open-library">내 빌드 <b id="saved-count">0</b></button></nav>
+    <span class="prototype-badge">21계열 · 228개 기술 <i></i> 비공식 팬 프로젝트</span>
+  </header>
+  <main>
+    <section class="workspace" aria-label="캐릭터 빌드 편집기">
+      <div class="build-toolbar"><div class="build-name-wrap"><span class="save-crystal" aria-hidden="true">◆</span><div><label class="sr-only" for="build-name">빌드 이름</label><input id="build-name" maxlength="60" autocomplete="off" spellcheck="false"><span id="build-status">레벨별 능력치와 스킬을 계획하세요</span></div></div><div class="toolbar-actions"><button id="undo" class="button quiet">↶ 되돌리기</button><button id="reset" class="button quiet">↻ 초기화</button><button id="save" class="button primary">빌드 저장</button></div></div>
+      <div class="timeline game-panel"><div class="timeline-title"><h2>레벨별 성장 계획</h2><span id="timeline-caption">이전 레벨을 보아도 이후 계획은 유지됩니다</span></div><div class="level-selector"><button id="level-prev" class="level-arrow" aria-label="이전 레벨">◀</button><div id="level-steps" role="group" aria-label="레벨 선택"></div><button id="level-next" class="level-arrow" aria-label="다음 레벨">▶</button></div><div id="current-level-plan" class="current-level-plan" role="status" aria-live="polite"></div></div>
+      <details id="growth-record" class="journey-panel game-panel"><summary><span class="journey-heading">성장 기록</span><span class="journey-toggle-hint">레벨별 스탯·스킬 투자 요약</span><span class="journey-toggle-label" aria-hidden="true"></span></summary><div class="journey-toolbar"><span>각 레벨에 직접 투자한 내용입니다. 레벨을 누르면 해당 시점으로 이동합니다.</span><button id="load-demo">예시 빌드 ↗</button></div><div class="journey-table-wrap" tabindex="0" aria-label="성장 기록 표"><table class="journey-table"><caption class="sr-only">1~30레벨의 스탯, 스킬, 문헌과 보상 계획</caption><thead><tr><th scope="col">레벨</th><th scope="col">스탯 투자</th><th scope="col">습득 스킬</th><th scope="col">문헌·보상</th></tr></thead><tbody id="journey-list"></tbody></table></div></details>
+      <div class="planner-grid">
+        <aside class="character-panel game-panel" aria-label="캐릭터와 능력치">
+          <div class="panel-heading"><h2>캐릭터</h2><span>MERCENARY</span></div>
+          <div id="character-picker" class="character-picker" role="group" aria-label="캐릭터 선택"></div>
+          <div class="character-sheet"><div class="character-summary"><div id="portrait" class="portrait"></div><div><h2 id="character-name"></h2><span id="character-role"></span><span id="character-english"></span><div class="character-points">SP: <strong id="stat-points">0</strong></div></div></div><div class="character-level-row"><strong id="character-level"></strong><span>능력치 포인트</span></div></div>
+          <div class="trait-card"><h3><span aria-hidden="true">✦</span> <span id="trait-name"></span></h3><p id="trait-description"></p><div id="trait-controls" hidden></div></div>
+          <div class="subheading"><h3>기본 능력치</h3><span>기본 + 투자</span></div><div id="stats" class="stats"></div>
+          <div class="event-rewards"><h3>이벤트 보상</h3><div id="event-reward-controls"></div></div>
+          <div id="starting-skills" class="starting-skills"></div>
+          <div class="affinity"><h3>시작 시 해금한 계열</h3><div id="affinity-list"></div></div>
+          <p class="panel-note">시작 해금과 이미 습득한 기술은 별개입니다.<br>능력치·문헌·기술 투자는 선택한 레벨에 기록됩니다.</p>
+        </aside>
+
+        <section class="skills-panel game-panel" aria-label="스킬 트리">
+          <div class="panel-heading"><h2>능력</h2><div class="ap-counter">남은 AP <strong id="skill-points">0</strong></div></div>
+          <div class="skill-categories" role="group" aria-label="스킬 분류"><button data-category="weapon">무기 기술 <small>11</small></button><button data-category="utility">범용 <small>6</small></button><button data-category="magic">마법 <small>4</small></button></div>
+          <div class="tree-toolbar"><div id="tree-picker" role="group" aria-label="스킬 트리 선택"></div><button id="search-toggle" class="search-button" aria-label="스킬 검색" aria-expanded="false">⌕</button></div>
+          <div id="search-area" class="search-area" hidden><label for="skill-search">전체 스킬 검색</label><input id="skill-search" type="search" placeholder="한국어 또는 영어 스킬명"><div id="search-results"></div></div>
+          <div class="tree-stage"><div class="tree-stage-heading"><span id="tree-subtitle"></span><span id="tree-investment"></span></div><div id="skill-tree" class="skill-tree"></div></div>
+          <div class="tree-legend"><span><i class="learned"></i>습득</span><span><i class="available"></i>습득 가능</span><span><i class="locked"></i>조건 미충족</span><span><i class="prerequisite"></i>선행 기술</span><span><i class="connection-active"></i>활성 연결선</span><span class="selection-hint">클릭: 상세 · 더블클릭: 습득/취소 · ◆ 모두 필요</span></div>
+        </section>
+
+        <aside class="right-column">
+          <section class="inspector game-panel" aria-label="스킬 상세와 해금 조건"><div class="panel-heading"><h2>선택한 기술</h2><span>ABILITY DETAILS</span></div><div id="skill-detail" aria-live="polite"></div></section>
+        </aside>
+      </div>
+      <section class="tier-guide game-panel" aria-labelledby="tier-guide-title">
+        <div class="tier-guide-header"><div><h2 id="tier-guide-title">티어별 운영 가이드</h2><p>던전 진행에 맞춰 운영 방법과 장비 계획을 남겨보세요.</p></div><span>운영 설명 · 장비 세팅</span></div>
+        <div id="tier-guide-tabs" class="tier-guide-tabs" role="tablist" aria-label="던전 티어"></div>
+        <div id="tier-guide-editor" class="tier-guide-layout" role="tabpanel" tabindex="0"></div>
+        <p class="tier-guide-footnote">티어는 레벨과 별도로 선택합니다. 작성한 설명과 장비 계획은 빌드에 함께 저장됩니다.</p>
+      </section>
+    </section>
+    <footer><p>게임 아트 © Ink Stains Games <span>·</span> 비공식 팬 프로젝트</p><p>해금 조건·전투 수치 패치별 대조 중</p></footer>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <dialog id="souvenir-dialog" aria-labelledby="souvenir-dialog-title"><button class="dialog-close" aria-label="닫기" data-close-dialog>×</button><div class="dialog-eyebrow">HILDA · BONE CHARM</div><div class="souvenir-dialog-heading"><h2 id="souvenir-dialog-title">뼈 부적 기념품</h2><strong id="souvenir-selection-count" role="status" aria-live="polite"></strong></div><p id="souvenir-limit-note">효과를 최대 3개 선택하세요. 다른 효과로 바꾸려면 선택한 기념품을 먼저 해제해주세요.</p><div class="souvenir-table-wrap"><table class="souvenir-table"><caption class="sr-only">힐다 기념품별 전리품, 효과, 기본값과 최대치</caption><thead><tr><th scope="col">전리품</th><th scope="col">효과</th><th scope="col">기본값</th><th scope="col">최대치</th></tr></thead><tbody id="souvenir-options"></tbody></table></div><div class="souvenir-dialog-footer"><p>선택한 효과의 기본값과 최대치를 함께 표시합니다.</p><button class="button primary" data-close-dialog>선택 완료</button></div></dialog>
+  <dialog id="library-dialog"><button class="dialog-close" aria-label="닫기" data-close-dialog>×</button><div class="dialog-eyebrow">SAVED BUILDS</div><h2>내 빌드</h2><p>이 브라우저에 저장한 빌드입니다.</p><div id="library-list"></div></dialog>
+  <dialog id="reset-dialog"><h2>빌드를 초기화할까요?</h2><p>현재 캐릭터를 유지하고 1레벨부터 다시 시작합니다.<br>투자 내역과 티어별 설명·장비 계획이 초기화됩니다. 저장한 빌드는 유지됩니다.</p><div class="dialog-actions"><button class="button" data-close-dialog>계속 편집</button><button id="confirm-reset" class="button primary">초기화</button></div></dialog>
+</body>
+</html>
